@@ -22,7 +22,27 @@ señales» 2027. Documento vivo de referencia: «Instrucciones para construir el
 Rúbricas: cuaderno ★ 3 · otros tres 2 c/u · cierre 1 = 10. Hoja de resultados: tabla 2 · gráfica 3 ·
 firma y captura 1 · predicho contra obtenido 3 · preguntas 1 = 10.
 
-## 3. Trabajo individual
+## 3. Estructura de cada cuaderno
+
+1. **Objetivo y en qué consiste**: objetivo de la sesión en una frase; la situación de planta; tabla parte A,
+   parte B y hoja de resultados con tiempo, qué se hace y qué produce; qué se entrega y cómo se califica; reglas.
+2. **Herramientas del curso** (oculta) e **identificación**.
+3. **Parte A**: tus datos; un ejemplo de cómo se llena un ejercicio con datos que no son los del alumno; cuatro
+   ejercicios. Cada uno con «para qué sirve» en una frase. El ★ da la fórmula; los demás, sólo el concepto. El alumno
+   escribe la expresión (✎ a), la sustitución con sus números y su unidad (✎ b) y lo que predice (✎ c);
+   `revisa(n, valor, sustitucion, prediccion, datos, unidades)` detiene la celda si falta algo. Cierre escrito con
+   `revisa_texto`, que nombra lo que falta sin revelar el valor esperado.
+4. **Parte B**: tabla de bloques (≤ 70 min + 10 de «Tabla y captura»); datos reales asignados por código con aviso
+   de la causa si hay que recurrir a los sintéticos; el alumno completa el cálculo clave y escribe su conclusión con
+   sus valores; CSV firmado con `extra={"fuente": ..., ...}`.
+5. **Cierre**: estado de cada ejercicio (`REGISTRO`) y huella.
+
+`revisa` comprueba que el ejercicio esté completo, no que esté bien: la corrección la da `clave(codigo)`. La misma
+expresión en Python puede copiarse; la sustitución, el resultado y las respuestas llevan los números de cada alumno.
+Los datos personales deben variar lo suficiente para que el ★ casi no se repita en el grupo (en S0, rango × bits da
+35 combinaciones en 40 códigos consecutivos).
+
+## 4. Trabajo individual
 
 | Mecanismo | Implementación |
 |---|---|
@@ -37,13 +57,13 @@ firma y captura 1 · predicho contra obtenido 3 · preguntas 1 = 10.
 | Clave del profesor | `clave(codigo)` en el cuaderno PROF (fuera del repositorio) con la tabla de todo el grupo |
 | Preguntas con dato propio | El cierre y las preguntas del reporte piden citar los valores del alumno |
 
-## 4. Fuentes de datos
+## 5. Fuentes de datos
 
 Regla: la parte A usa datos sintéticos con la semilla del alumno; la parte B, datos experimentales o públicos asignados
 por código. Fuentes, licencias y regla de asignación en [`FUENTES_DE_DATOS.md`](FUENTES_DE_DATOS.md). Todo conjunto
 público se guarda recortado en `sesion_NN_tema/datos/` y el cuaderno lo usa si la fuente original no responde.
 
-## 5. Piezas de cada paquete
+## 6. Piezas de cada paquete
 
 | Pieza | Archivo |
 |---|---|
@@ -64,7 +84,7 @@ Láminas comunes que cambian: lista de componentes → fuentes de datos y herram
 conjunto de datos o del registrador; diagrama eléctrico → cadena de adquisición; montaje tipo Tinkercad → flujo en
 pantalla cuaderno → CSV firmado → hoja de resultados.
 
-## 6. Producción
+## 7. Producción
 
 1. [`comun/identidad.py`](../comun/identidad.py) (en el repositorio); `tsu.py`, `marco_daq.py` y `conf_daq.py` para las
    láminas viven fuera del repositorio, con el resto de las fuentes del profesor.
@@ -86,9 +106,10 @@ sesión se les agrega la celda de identificación, los datos por código, la fir
 parte A, y el archivo se renombra `S#_AC_CLASE_Colab_ALUMNO.ipynb`. La insignia de Colab del README de la sesión se
 actualiza en el mismo commit.
 
-## 7. Verificación de cada paquete
+## 8. Verificación de cada paquete
 
-- [ ] Los dos cuadernos corren de principio a fin con tres códigos de prueba; con la identificación vacía, el ALUMNO se detiene con el mensaje esperado.
+- [ ] Los dos cuadernos corren de principio a fin con tres códigos de prueba; con la identificación vacía, el ALUMNO se detiene con el mensaje esperado; con la identificación llena, se detiene en el ★ y dice qué falta.
+- [ ] La primera celda explica el objetivo y en qué consiste el cuaderno; cada ejercicio dice para qué sirve.
 - [ ] Los tres códigos dan resultados distintos y `clave(codigo)` coincide con el cuaderno resuelto.
 - [ ] Toda gráfica tiene firma (`fig._firmada`) y `verificar_csv` acepta el CSV exportado.
 - [ ] La hoja recalcula con un CSV de prueba: gráfica armada, leyenda con el nombre, verificación en rojo si el código no coincide.
@@ -96,7 +117,7 @@ actualiza en el mismo commit.
 - [ ] Láminas revisadas como imagen; revisión independiente del paquete.
 - [ ] Prueba del profesor: su código en Colab, el CSV importado en su hoja y una tarea de prueba en Classroom.
 
-## 8. Decisiones pendientes
+## 9. Decisiones pendientes
 
 - [ ] Un cuaderno con partes A y B (propuesto) o dos por sesión.
 - [ ] Uso de Gemini en Colab y cómo se declara en el reporte.

@@ -35,11 +35,13 @@ siguiente; la muestra completa está en [`plantillas/`](plantillas/).
 1. Abre el cuaderno con la insignia **Open in Colab** y guarda tu copia: **Archivo → Guardar una copia en Drive**.
 2. Escribe tu **nombre completo y tu código** en la celda de identificación. Sin ellos el cuaderno no avanza.
 3. **Tus datos dependen de tu código**: los números de tus compañeros son distintos y copiar un resultado no sirve.
-4. Cada gráfica sale con tu nombre, tu código, la fecha y una **huella** de seis caracteres. No la borres.
-5. La parte B descarga `S#_<código>.csv`. En tu hoja de resultados: pestaña **CSV → Archivo → Importar → Subir →
+4. En cada ejercicio **escribes** tres cosas: la expresión en Python, la sustitución con tus números y su unidad, y lo
+   que predice para la práctica. Si falta alguna, la celda se detiene y dice qué falta.
+5. Cada gráfica sale con tu nombre, tu código, la fecha y una **huella** de seis caracteres. No la borres.
+6. La parte B descarga `S#_<código>.csv`. En tu hoja de resultados: pestaña **CSV → Archivo → Importar → Subir →
    Reemplazar la hoja actual**. Escribe tu nombre y tu código en la pestaña Resultados; si el código no coincide con
    el del CSV, la verificación se pone en rojo.
-6. Antes de entregar: **Entorno de ejecución → Reiniciar y ejecutar todo**, sin errores.
+7. Antes de entregar: **Entorno de ejecución → Reiniciar y ejecutar todo**, sin errores.
 
 Si usas un asistente de IA, dilo en tu reporte; las preguntas piden tus propios números.
 
