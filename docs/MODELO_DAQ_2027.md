@@ -122,6 +122,9 @@ Orden: S2 (piloto) y S4, luego S1, luego S3 y S5 a S8.
 - **S7** (25 de octubre): `sesion_07_vibracion_y_monitoreo/gen_s7.py`; BPFO, RMS, velocidad para ISO 10816-3 y
   umbral con línea base; práctica con 12 casos de la CWRU (umbral fuera de muestra, efecto de la carga, espectro de la
   envolvente). Bloque opcional con phyphox para el ventilador del grupo.
+- **S8** (25 de octubre): `sesion_08_mantenimiento_predictivo_e_ia/gen_s8.py`; vida remanente, precisión,
+  sensibilidad y costo; práctica con C-MAPSS FD001 (recta contra exponencial contra real, umbral por costo en 1000
+  decisiones, umbral contra regresión logística en 100 motores de prueba, árbol sin límite para el sobreajuste).
 
 Nota: la hoja busca los resultados sin distinguir mayúsculas; `exportar_csv` rechaza nombres que sólo difieren en
 mayúsculas (p. ej. `U` y `u`).
