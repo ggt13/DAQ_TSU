@@ -117,6 +117,9 @@ def exportar_csv(ruta, alumno, resultados, columnas, extra=None):
     y la tabla: encabezados y datos. `columnas` es un diccionario {encabezado: lista de valores}, todas de
     la misma longitud. La hoja busca cada dato por su etiqueta, no por su renglón.
     """
+    claves = [k.lower() for k in resultados]
+    if len(set(claves)) != len(claves):    # la hoja busca sin distinguir mayúsculas: U y u serían el mismo dato
+        raise ValueError("Dos resultados tienen el mismo nombre salvo mayúsculas; renómbrelos.")
     largos = {len(v) for v in columnas.values()}
     if len(largos) != 1:
         raise ValueError("Todas las columnas de la tabla deben tener el mismo número de renglones.")
@@ -226,9 +229,11 @@ def revisa(n, valor, sustitucion, prediccion, datos, unidades):
     s = str(sustitucion)
     if "=" not in s:
         faltan.append("la sustitución con «=»")
-    for d in datos:
+    # datos: lista de números (se nombran por su valor) o {descripción: valor} (se nombran sin revelar el valor)
+    pares = datos.items() if isinstance(datos, dict) else [(None, d) for d in datos]
+    for que, d in pares:
         if not aparece(d, s):
-            faltan.append(f"tu dato {d:g} en la sustitución")
+            faltan.append(f"{que} en la sustitución" if que else f"tu dato {float(d):g} en la sustitución")
     if valor is not None and not faltan and not aparece(valor, s.split("=")[-1]):
         faltan.append("el resultado que dio tu expresión, después del último «=»")
     if not any(u in s for u in unidades):

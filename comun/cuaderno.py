@@ -39,8 +39,17 @@ class Huecos:
         return f"{var} = {vacio}   # {nota}"
 
 
+def _datos(datos):
+    """["P_S", ("tu desviación estándar s", "np.std(L, ddof=1)")] -> código del diccionario para revisa()."""
+    partes = []
+    for d in datos:
+        que, expr = d if isinstance(d, tuple) else (f"tu dato {d}", d)
+        partes.append(f"{que!r}: {expr}")
+    return "{" + ", ".join(partes) + "}"
+
+
 def ejercicio(h, n, var, datos, unidades):
-    """unidades: lista de textos aceptados, o una expresión de Python (str) que la produce."""
+    """datos: nombres de variables o (descripción, expresión). unidades: lista de textos o expresión de Python."""
     unidades = unidades if isinstance(unidades, str) else repr(unidades)
     return code(f"""
 # ✎ {n}a · La expresión en Python, con las variables de tus datos
@@ -50,7 +59,7 @@ def ejercicio(h, n, var, datos, unidades):
 # ✎ {n}c · Lo que predice en la práctica, con tus palabras (al menos 10)
 {h(f"PRED_{n}")}
 
-revisa({n}, {var}, SUST_{n}, PRED_{n}, datos=[{", ".join(datos)}], unidades={unidades})
+revisa({n}, {var}, SUST_{n}, PRED_{n}, datos={_datos(datos)}, unidades={unidades})
 """)
 
 

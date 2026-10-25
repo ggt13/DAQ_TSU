@@ -102,10 +102,15 @@ Orden: S2 (piloto) y S4, luego S1, luego S3 y S5 a S8.
 
 - **S2** (piloto, 24 de octubre): `sesion_02_muestreo_y_cuantizacion/gen_s2.py` con `comun/cuaderno.py` y
   `comun/hoja.py`. Es el modelo a seguir para las demás.
+- **S4** (24 de octubre): `sesion_04_error_e_incertidumbre/gen_s4.py`; práctica con la intercomparación de los tres
+  RC-5 (`prepara_intercomparacion.py` arma el CSV a partir de los archivos de ElitechLog).
+
+Nota: la hoja busca los resultados sin distinguir mayúsculas; `exportar_csv` rechaza nombres que sólo difieren en
+mayúsculas (p. ej. `U` y `u`).
 
 ### Cuadernos que ya existen (21 de octubre)
 
-Las carpetas de S1, S3, S4 y S6 tienen un cuaderno `S#_AC_PR_#_1_..._2027_GGT.ipynb` armado con el modelo
+Las carpetas de S1, S3 y S6 tienen un cuaderno `S#_AC_PR_#_1_..._2027_GGT.ipynb` armado con el modelo
 anterior (Colab como práctica, formulario sin identificación). Son el punto de partida de la parte B: al rehacer cada
 sesión se les agrega la celda de identificación, los datos por código, la firma y el CSV firmado; se antepone la
 parte A, y el archivo se renombra `S#_AC_CLASE_Colab_ALUMNO.ipynb`. La insignia de Colab del README de la sesión se
