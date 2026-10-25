@@ -98,9 +98,14 @@ pantalla cuaderno → CSV firmado → hoja de resultados.
 
 Orden: S2 (piloto) y S4, luego S1, luego S3 y S5 a S8.
 
+### Sesiones terminadas
+
+- **S2** (piloto, 24 de octubre): `sesion_02_muestreo_y_cuantizacion/gen_s2.py` con `comun/cuaderno.py` y
+  `comun/hoja.py`. Es el modelo a seguir para las demás.
+
 ### Cuadernos que ya existen (21 de octubre)
 
-Las carpetas de S1, S2, S3, S4 y S6 tienen un cuaderno `S#_AC_PR_#_1_..._2027_GGT.ipynb` armado con el modelo
+Las carpetas de S1, S3, S4 y S6 tienen un cuaderno `S#_AC_PR_#_1_..._2027_GGT.ipynb` armado con el modelo
 anterior (Colab como práctica, formulario sin identificación). Son el punto de partida de la parte B: al rehacer cada
 sesión se les agrega la celda de identificación, los datos por código, la firma y el CSV firmado; se antepone la
 parte A, y el archivo se renombra `S#_AC_CLASE_Colab_ALUMNO.ipynb`. La insignia de Colab del README de la sesión se
