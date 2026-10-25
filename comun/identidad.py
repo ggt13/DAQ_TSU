@@ -109,12 +109,13 @@ def firma(fig, alumno, resultados=None):
     return fig
 
 
-def exportar_csv(ruta, alumno, resultados, columnas):
+def exportar_csv(ruta, alumno, resultados, columnas, extra=None):
     """Escribe el CSV firmado que se importa en la pestaña «CSV» de la hoja de resultados.
 
-    Renglones 1 a 5: nombre, código, sesión, huella y fecha. Después, un renglón por resultado
-    («resultado:<nombre>», valor). Luego un renglón vacío y la tabla: encabezados y datos.
-    `columnas` es un diccionario {encabezado: lista de valores}, todas de la misma longitud.
+    Renglones de metadatos: nombre, codigo, sesion, huella, ejecutado y los de `extra` (p. ej. la fuente
+    de los datos). Después, un renglón por resultado («resultado:<nombre>», valor). Luego un renglón vacío
+    y la tabla: encabezados y datos. `columnas` es un diccionario {encabezado: lista de valores}, todas de
+    la misma longitud. La hoja busca cada dato por su etiqueta, no por su renglón.
     """
     largos = {len(v) for v in columnas.values()}
     if len(largos) != 1:
@@ -125,7 +126,9 @@ def exportar_csv(ruta, alumno, resultados, columnas):
         w.writerow(["codigo", alumno.codigo])
         w.writerow(["sesion", alumno.sesion])
         w.writerow(["huella", huella(alumno, resultados)])
-        w.writerow(["fecha", ahora()])
+        w.writerow(["ejecutado", ahora()])
+        for k, v in (extra or {}).items():
+            w.writerow([k, v])
         for k, v in resultados.items():
             w.writerow([f"resultado:{k}", _redondea(v)])
         w.writerow([])
@@ -157,3 +160,88 @@ def verificar_csv(ruta):
     meta, resultados, _ = leer_csv_firmado(ruta)
     alumno = Alumno(meta["nombre"], meta["codigo"], meta["sesion"])
     return huella(alumno, resultados) == meta["huella"]
+
+
+# ---------------------------------------------------------------------------------------------
+# Revisión de lo que escribe el alumno. Comprueba que cada ejercicio esté COMPLETO, no que esté
+# bien: el resultado correcto lo califica el profesor con la clave. Si falta algo, detiene el
+# cuaderno y dice qué falta.
+# ---------------------------------------------------------------------------------------------
+import math
+import re
+
+REGISTRO = {}
+
+
+def _normaliza(texto):
+    t = str(texto).replace("\u202f", "").replace("\u00a0", "").replace(" ", "")
+    t = re.sub(r"(?<![\d.])([1-9]\d{0,2})((?:,\d{3})+)(?![\d])",  # separador de miles: 32,000 -> 32000
+               lambda m: m.group(1) + m.group(2).replace(",", ""), t)
+    return t.replace(",", ".")                                       # coma decimal: 0,068 -> 0.068
+
+
+def _formas(x):
+    """Maneras razonables de escribir un número: entero, o redondeado a 2, 3 o 4 cifras significativas."""
+    x = float(x)
+    formas = set()
+    if x == int(x) and abs(x) < 1e9:
+        formas.add(str(int(x)))
+    for cifras in (2, 3, 4):
+        g = f"{x:.{cifras}g}"
+        if "e" not in g:
+            formas.add(g)
+    return {f for f in formas if f not in ("", "-0")}
+
+
+def aparece(x, texto):
+    """True si el número x está escrito en el texto (sin confundir 0.03 con 0.0337)."""
+    t = _normaliza(texto)
+    return any(re.search(r"(?<![\d.])" + re.escape(f) + r"0*(?![\d])", t) for f in _formas(x))
+
+
+def _palabras(texto):
+    return len(re.findall(r"\w+", str(texto)))
+
+
+def revisa(n, valor, sustitucion, prediccion, datos, unidades):
+    """Revisión de un ejercicio de la parte A.
+
+    valor: lo que calculó la expresión del alumno. sustitucion: texto con sus números, el resultado y la
+    unidad (p. ej. «70 / 2**8 = 0.273 °C»). prediccion: qué espera ver en la práctica, con sus palabras.
+    datos: los números personales que deben aparecer en la sustitución. unidades: unidades aceptadas.
+    """
+    faltan = []
+    if valor is None:
+        faltan.append("la expresión en Python")
+    elif not isinstance(valor, (int, float, np.integer, np.floating)) or not math.isfinite(float(valor)):
+        faltan.append("una expresión que dé un número")
+    s = str(sustitucion)
+    if "=" not in s:
+        faltan.append("la sustitución con «=»")
+    for d in datos:
+        if not aparece(d, s):
+            faltan.append(f"tu dato {d:g} en la sustitución")
+    if valor is not None and not faltan and not aparece(valor, s.split("=")[-1]):
+        faltan.append("el resultado que dio tu expresión, después del último «=»")
+    if not any(u in s for u in unidades):
+        faltan.append("la unidad (" + " o ".join(unidades) + ")")
+    if _palabras(prediccion) < 10:
+        faltan.append("lo que predice, en al menos 10 palabras")
+    REGISTRO[n] = not faltan
+    if faltan:
+        raise ValueError(f"Ejercicio {n}: falta " + "; ".join(faltan) + ".")
+    print(f"✔ Ejercicio {n} completo.")
+
+
+def revisa_texto(nombre, texto, numeros, minimo=20):
+    """Revisión de una respuesta escrita: largo mínimo y los números propios que debe citar.
+
+    numeros: diccionario {qué es: valor}; el mensaje nombra lo que falta sin revelar el valor.
+    """
+    faltan = [que for que, x in numeros.items() if not aparece(x, texto)]
+    if _palabras(texto) < minimo:
+        faltan.insert(0, f"al menos {minimo} palabras")
+    REGISTRO[nombre] = not faltan
+    if faltan:
+        raise ValueError(f"{nombre}: falta " + "; ".join(faltan) + ".")
+    print(f"✔ {nombre} completo.")

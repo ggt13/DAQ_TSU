@@ -6,8 +6,8 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-from identidad import (asignar, exportar_csv, firma, huella, identificar, leer_csv_firmado,
-                       parametro, verificar_csv)
+from identidad import (aparece, asignar, exportar_csv, firma, huella, identificar, leer_csv_firmado,
+                       parametro, revisa, revisa_texto, verificar_csv)
 
 
 def debe_fallar(nombre, codigo):
@@ -52,9 +52,9 @@ assert len(huella(a, r)) == 6
 # 5. CSV firmado: se lee y su huella se verifica; si alguien cambia un resultado, falla
 with tempfile.TemporaryDirectory() as d:
     ruta = os.path.join(d, "S2_217654321_Lopez.csv")
-    exportar_csv(ruta, a, r, {"t_s": [0, 0.01, 0.02], "v_V": [0.0, 1.2, 2.4]})
+    exportar_csv(ruta, a, r, {"t_s": [0, 0.01, 0.02], "v_V": [0.0, 1.2, 2.4]}, extra={"fuente": "prueba"})
     meta, res, tabla = leer_csv_firmado(ruta)
-    assert meta["nombre"] == "Ana López Ruiz" and meta["codigo"] == "217654321"
+    assert meta["nombre"] == "Ana López Ruiz" and meta["codigo"] == "217654321" and meta["fuente"] == "prueba"
     assert tabla[0] == ["t_s", "v_V"] and len(tabla) == 4
     assert verificar_csv(ruta)
     texto = open(ruta, encoding="utf-8").read().replace("resultado:error_max,2.44", "resultado:error_max,2.5")
@@ -67,5 +67,32 @@ ax.plot([0, 1], [0, 1])
 firma(fig, a, r)
 assert getattr(fig, "_firmada", False)
 assert any("217654321" in t.get_text() and huella(a, r) in t.get_text() for t in fig.texts)
+
+
+# 7. Revisión de ejercicios: completo pasa; incompleto se detiene y dice qué falta
+def falla(*args, **kw):
+    try:
+        (kw.pop("f", revisa))(*args, **kw)
+    except ValueError as e:
+        return str(e)
+    raise AssertionError("debió detenerse")
+
+lsb = 70 / 2 ** 10
+pred = "las lecturas sólo cambian en saltos de un LSB, unas siete centésimas de grado"
+revisa(1, lsb, "70 / 2**10 = 0.0684 °C", pred, [70, 10], ["°C"])
+assert "expresión" in falla(1, None, "70 / 2**10 = 0.0684 °C", pred, [70, 10], ["°C"])
+assert "tu dato 10" in falla(1, lsb, "70 / 2**8 = 0.0684 °C", pred, [70, 10], ["°C"])
+assert "resultado" in falla(1, lsb, "70 / 2**10 = 0.27 °C", pred, [70, 10], ["°C"])
+assert "unidad" in falla(1, lsb, "70 / 2**10 = 0.0684", pred, [70, 10], ["°C"])
+assert "10 palabras" in falla(1, lsb, "70 / 2**10 = 0.0684 °C", "saltos", [70, 10], ["°C"])
+assert aparece(32000, "32 000 × 60 s") and aparece(32000, "32,000") and aparece(0.0684, "0,0684")
+revisa(3, 32000 * 60 / 86400, "32 000 × 60 / 86 400 = 22.2 días", pred, [32000, 60], ["día"])
+revisa_texto("Conclusión", "El error que obtuve fue 0.0337 °C y el predicho 0.0342 °C, así que el redondeo "
+             "nunca pasó de medio escalón del convertidor de diez bits en toda la semana",
+             {"el error obtenido": 0.0337, "el error predicho": 0.0342})
+m = falla("Conclusión", "El error fue 0.0337 y quedó dentro de lo esperado según la teoría "
+          "del redondeo a medio escalón en toda la semana registrada",
+          {"el error obtenido": 0.0337, "el error predicho": 0.0342}, f=revisa_texto)
+assert "el error predicho" in m and "0.0342" not in m
 
 print("identidad.py: todas las pruebas pasan")
