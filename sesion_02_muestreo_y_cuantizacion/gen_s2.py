@@ -122,7 +122,7 @@ SOL = {
 
 
 def celdas(r=False, prof=False, nombre="", codigo=""):
-    h = cu.Huecos(SOL, r or prof)
+    h = cu.Huecos(SOL, r if r else prof)
     C = [cu.md(f"""
 # S2 · Muestreo, cuantización y registro · ¿Cada cuánto registrar sin que el registro mienta?
 **Sistemas de adquisición de datos · TSU en Electrónica y Pruebas · Jabil**
@@ -142,7 +142,7 @@ la memoria?
 ## En qué consiste este cuaderno
 | Parte | Tiempo | Qué haces | Qué produce |
 |---|---|---|---|
-| **A · Actividad en clase** | 30 min | Cuatro ejercicios (★ primero) sobre **tu** escenario. En cada uno escribes la expresión en Python, la sustitución con tus números y su unidad, y lo que predice. Al final eliges el intervalo de tu campaña | Tus resultados, tus predicciones y el intervalo que programarás en el RC-5 |
+| **A · Actividad en clase** | 30 min | Cuatro ejercicios (★ primero) sobre **tu** escenario. En cada uno escribes tu resultado, la sustitución con tus números y su unidad, y lo que predice. Al final eliges el intervalo de tu campaña | Tus resultados, tus predicciones y el intervalo que programarás en el RC-5 |
 | **B · Práctica** | 80 min | Tomas 60 días de temperatura real de Guadalajara, la registras con un intervalo demasiado largo y mides el ciclo falso que aparece | Gráficas firmadas, tu conclusión y el archivo `S2_<código>.csv` |
 | **Hoja de resultados** | en la práctica | Importas el CSV en tu hoja de cálculo de Google y contestas las preguntas | El reporte que entregas |
 
@@ -159,6 +159,7 @@ la memoria?
 - La revisión automática dice si el ejercicio está **completo**, no si está **bien**; eso lo califica el profesor.
 - Si usas un asistente de IA, dilo en tu reporte. Las sustituciones y las respuestas llevan **tus** números.
 """),
+         cu.guia(),
          cu.herramientas(DATOS_S2)]
     C += cu.identificacion(SESION, nombre, codigo)
     C += [cu.md("""
@@ -167,7 +168,7 @@ Ejecuta la celda para ver **tu** escenario.
 
 **Cómo se llena cada ejercicio.** Ejemplo con otros datos (no son los tuyos):
 ```
-dt_max_s = P_S / 2
+dt_max_s = 300
 SUST_1   = "600 s / 2 = 300 s"
 PRED_1   = "si registro más espaciado que cinco minutos el ciclo del horno aparecerá falso en la gráfica"
 ```
@@ -193,8 +194,8 @@ Criterio de Nyquist: **al menos dos lecturas por periodo**, es decir, **Δt_max 
 de mantenimiento equivocadas.
 
 Si registras cada `DT_MAL_S` segundos (más que P/2), la frecuencia que aparece es la **diferencia** entre la frecuencia
-real (1/P) y la del registro (1/Δt). El periodo aparente es el inverso de esa diferencia, en valor absoluto. Usa
-`abs(...)` en Python. Resultado en segundos.
+real (1/P) y la del registro (1/Δt). El periodo aparente es el inverso de esa diferencia, sin signo (valor
+absoluto). Resultado en segundos.
 """),
           cu.ejercicio(h, 2, "T_aparente_s", ["P_S", "DT_MAL_S"], ["s"]),
           cu.md("La gráfica muestra tu fenómeno (azul), las lecturas del registro mal hecho (puntos) y el ciclo que esas lecturas dibujan (línea discontinua): ese ciclo no existe. Si tu resultado del ejercicio 2 es correcto, la línea discontinua pasa por todos los puntos."),
@@ -413,6 +414,8 @@ if __name__ == "__main__":
     generar_hoja()
     print("listo:", ALUMNO, PROF, HOJA, sep="\n  ")
     if len(sys.argv) == 3 and sys.argv[1] == "--prueba":
+        cu.guardar(celdas(r="numero", nombre="Alumno De Prueba", codigo="217654321"),
+                   os.path.join(sys.argv[2], f"{SESION}_numeros.ipynb"))
         ruta = cu.guardar(celdas(r=True, nombre="Alumno De Prueba", codigo="217654321"),
                           os.path.join(sys.argv[2], "S2_resuelto.ipynb"))
         print("  prueba:", ruta)

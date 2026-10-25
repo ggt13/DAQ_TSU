@@ -72,15 +72,15 @@ SOL = {
     "PRED_4": '"con este intervalo cada sensor genera ese volumen al día y con cientos de sensores la planta acumula mucho"',
     "CIERRE": ('f"A {T_OBJ} °C mi termistor tiene {R_T:.0f} Ω, el divisor entrega {V_T:.3f} V y el ADC guarda la cuenta '
                '{N_T}; ese número entero es lo único que llega al archivo de la planta"'),
-    "V_B": "cuentas * VCC / N_MAX",
-    "resol_pred_C": "(VCC / N_MAX) / S_V_C / 2",
+    "PASO_V": "VCC / N_MAX",
+    "resol_pred_C": "PASO_V / S_V_C / 2",
     "CONCLUSION_B": ('f"Predije un error máximo de {resol_pred_C:.4f} °C y obtuve {error_obt_C:.4f} °C; la diferencia viene '
                      'de que la sensibilidad del divisor cambia con la temperatura a lo largo de la semana"'),
 }
 
 
 def celdas(r=False, prof=False, nombre="", codigo=""):
-    h = cu.Huecos(SOL, r or prof)
+    h = cu.Huecos(SOL, r if r else prof)
     C = [cu.md(f"""
 # S1 · Datos en la industria y sistemas de adquisición · Del sensor al archivo
 **Sistemas de adquisición de datos · TSU en Electrónica y Pruebas · Jabil**
@@ -99,7 +99,7 @@ Cada alumno tiene su propia resistencia fija, su temperatura de trabajo y su int
 ## En qué consiste este cuaderno
 | Parte | Tiempo | Qué haces | Qué produce |
 |---|---|---|---|
-| **A · Actividad en clase** | 30 min | Cuatro ejercicios (★ primero) sobre **tu** cadena: resistencia, voltaje, cuenta y volumen de datos. En cada uno escribes la expresión, la sustitución con tus números y su unidad, y lo que predice | Tu cadena completa con números |
+| **A · Actividad en clase** | 30 min | Cuatro ejercicios (★ primero) sobre **tu** cadena: resistencia, voltaje, cuenta y volumen de datos. En cada uno escribes tu resultado, la sustitución con tus números y su unidad, y lo que predice | Tu cadena completa con números |
 | **B · Práctica** | 80 min | Una semana de temperatura real de Guadalajara pasa por **tu** cadena; reconstruyes la temperatura desde las cuentas y mides cuánto se pierde | Gráficas firmadas, tu conclusión y el archivo `S1_<código>.csv` |
 | **Hoja de resultados** | en la práctica | Importas el CSV en tu hoja de cálculo de Google y contestas las preguntas | El reporte que entregas |
 
@@ -115,6 +115,7 @@ Cada alumno tiene su propia resistencia fija, su temperatura de trabajo y su int
 - La revisión automática dice si el ejercicio está **completo**, no si está **bien**; eso lo califica el profesor.
 - Si usas un asistente de IA, dilo en tu reporte. Las sustituciones y las respuestas llevan **tus** números.
 """),
+         cu.guia(),
          cu.herramientas(DATOS_S1)]
     C += cu.identificacion(SESION, nombre, codigo)
     C += [cu.md("""
@@ -125,7 +126,7 @@ ver **tus** datos.
 
 **Cómo se llena cada ejercicio.** Ejemplo con otros datos (no son los tuyos):
 ```
-V_T    = VCC * RF / (R_T + RF)
+V_T    = 0.5556
 SUST_2 = "5 × 1000 / (8000 + 1000) = 0.5556 V"
 PRED_2 = "con una resistencia fija tan pequeña el voltaje de salida casi no cambiará con la temperatura"
 ```
@@ -139,7 +140,7 @@ print(f"Tus datos · resistencia fija RF = {RF} Ω · temperatura de trabajo T_O
 **Para qué sirve:** es el primer eslabón: el sensor convierte la temperatura en una propiedad eléctrica.
 
 La resistencia de un termistor NTC es **R = R25 · e^(β·(1/T − 1/T25))**, con las temperaturas en **kelvin**
-(T = °C + 273.15; T25 = 298.15 K). En Python, la exponencial es `np.exp(...)`. Calcula `R_T` en Ω a tu `T_OBJ`.
+(T = °C + 273.15; T25 = 298.15 K). En la calculadora, la exponencial es la tecla eˣ. Calcula `R_T` en Ω a tu `T_OBJ`.
 """),
           cu.ejercicio(h, 1, "R_T", [("tu temperatura en kelvin", "T_OBJ + 273.15")], ["Ω", "ohm"]),
           cu.md("""
@@ -155,7 +156,7 @@ queda abajo**. Calcula `V_T` en V.
 **Para qué sirve:** lo que se guarda no es un voltaje sino un número entero: la cuenta del convertidor.
 
 El convertidor reparte de 0 a `VCC` en cuentas de 0 a `N_MAX`. La cuenta es la fracción de `VCC` que representa tu
-voltaje, multiplicada por `N_MAX` y **redondeada** a entero (`round(...)`).
+voltaje, multiplicada por `N_MAX` y **redondeada** a entero (sin decimales).
 """),
           cu.ejercicio(h, 3, "N_T", [("tu V_T", "V_T")], ["cuenta"]),
           cu.md("""
@@ -192,7 +193,7 @@ la semana depende de tu código.
 |---|---|---|
 | B1 · Datos | 10 | Descargas la semana |
 | B2 · Por tu cadena | 20 | Cada hora pasa a resistencia, voltaje y cuenta, como lo guardaría el registrador |
-| B3 · De regreso | 20 | Conviertes las cuentas a volts y el cuaderno reconstruye la temperatura; predices y mides el error |
+| B3 · De regreso | 20 | Calculas cuánto vale una cuenta en volts; el cuaderno reconstruye la temperatura; predices y mides el error |
 | B4 · Conclusión | 20 | Comparas predicho contra obtenido, con tus números |
 | Tabla y captura | 10 | Descargas el CSV y lo importas en tu hoja de resultados |
 """),
@@ -228,19 +229,20 @@ print(f"Cuentas de {cuentas.min()} a {cuentas.max()}: la semana usó {cuentas.ma
 """),
           cu.md("""
 ### B3 · De regreso: de la cuenta a la temperatura
-1. `V_B`: el voltaje que representa cada cuenta del arreglo `cuentas` (la operación inversa del ejercicio 3).
-2. El cuaderno calcula con tu `V_B` la resistencia y la temperatura reconstruida.
-3. `resol_pred_C`: el **error máximo predicho**, medio escalón del convertidor expresado en °C. Un escalón vale
-   `VCC / N_MAX` volts y el divisor cambia `S_V_C` volts por cada °C a la temperatura media de tu semana.
+1. `PASO_V`: cuántos volts vale **una** cuenta (el rango de 0 a `VCC` repartido en `N_MAX` cuentas). El cuaderno
+   multiplica cada cuenta por tu `PASO_V`, y con eso calcula la resistencia y la temperatura reconstruida.
+2. `resol_pred_C`: el **error máximo predicho**: medio escalón expresado en °C. Divide tu `PASO_V` entre la
+   sensibilidad `S_V_C` (impresa arriba, en V/°C) y toma la mitad.
 """),
           cu.code("""
 T_media = float(np.mean(T_real))
 S_V_C = float((v_div(T_media + 0.5, RF) - v_div(T_media - 0.5, RF)))   # V por °C a la temperatura media
-print(f"Temperatura media de tu semana: {T_media:.2f} °C · sensibilidad del divisor S_V_C = {S_V_C * 1000:.2f} mV/°C")
+print(f"Temperatura media de tu semana: {T_media:.2f} °C · sensibilidad del divisor S_V_C = {S_V_C:.6f} V/°C ({S_V_C * 1000:.3f} mV/°C)")
 """),
-          cu.code(h("V_B") + "\n" + h("resol_pred_C") + """
+          cu.code(h("PASO_V") + "\n" + h("resol_pred_C") + """
 
-completa(V_B, "el voltaje de cada cuenta"); completa(resol_pred_C, "el error máximo predicho")
+completa(PASO_V, "cuántos volts vale una cuenta"); completa(resol_pred_C, "el error máximo predicho")
+V_B = cuentas * PASO_V
 R_B = RF * (VCC / np.asarray(V_B) - 1)
 T_rec = 1 / (1 / T25_K + np.log(R_B / R25) / BETA) - 273.15
 error = T_rec - T_real
@@ -344,6 +346,8 @@ if __name__ == "__main__":
     generar_hoja()
     print("listo:", ALUMNO, PROF, HOJA, sep="\n  ")
     if len(sys.argv) == 3 and sys.argv[1] == "--prueba":
+        cu.guardar(celdas(r="numero", nombre="Alumno De Prueba", codigo="217654321"),
+                   os.path.join(sys.argv[2], f"{SESION}_numeros.ipynb"))
         ruta = cu.guardar(celdas(r=True, nombre="Alumno De Prueba", codigo="217654321"),
                           os.path.join(sys.argv[2], "S1_resuelto.ipynb"))
         print("  prueba:", ruta)

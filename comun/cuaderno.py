@@ -35,10 +35,12 @@ class Huecos:
         self.resuelto = resuelto
 
     def __call__(self, var, nota="✎ escribe aquí", vacio=None):
+        texto = var.startswith(("SUST_", "PRED_")) or var in TEXTOS
+        if self.resuelto == "numero" and not texto:     # prueba: como alumno que escribe el número con 4 cifras
+            return f'{var} = float(f"{{({self.sol[var]}):.4g}}")'
         if self.resuelto:
             return f"{var} = {self.sol[var]}"
         if vacio is None:   # texto: sustituciones, predicciones y respuestas escritas; lo demás, números
-            texto = var.startswith(("SUST_", "PRED_")) or var in TEXTOS
             vacio = '""' if texto else "None"
         return f"{var} = {vacio}   # {nota}"
 
@@ -56,7 +58,7 @@ def ejercicio(h, n, var, datos, unidades):
     """datos: nombres de variables o (descripción, expresión). unidades: lista de textos o expresión de Python."""
     unidades = unidades if isinstance(unidades, str) else repr(unidades)
     return code(f"""
-# ✎ {n}a · La expresión en Python, con las variables de tus datos
+# ✎ {n}a · Tu resultado: el número que calculaste (punto decimal, al menos 3 cifras significativas)
 {h(var)}
 # ✎ {n}b · La sustitución con TUS números, el resultado y la unidad
 {h(f"SUST_{n}")}
@@ -65,6 +67,26 @@ def ejercicio(h, n, var, datos, unidades):
 
 revisa({n}, {var}, SUST_{n}, PRED_{n}, datos={_datos(datos)}, unidades={unidades})
 """)
+
+
+GUIA = """
+## Cómo se usa este cuaderno · no necesitas saber programar
+Sólo cambias lo que está después del signo **=** en los renglones marcados con ✎.
+
+| Para… | Haz esto |
+|---|---|
+| Ejecutar una celda | Clic en ▶ a su izquierda (o Ctrl + Enter). Ejecuta las celdas en orden, de arriba hacia abajo |
+| Escribir un número | Después del **=**, con punto decimal y sin comas de miles: `u_A = 0.0316`, `MEMORIA = 32000`. Usa al menos 3 cifras significativas |
+| Escribir un texto | Entre comillas: `SUST_1 = "70 / 2^10 = 0.0684 °C"`. No borres las comillas |
+| Calcular | Con calculadora o con tu hoja de cálculo. Si sabes Python puedes escribir la operación en vez del número: `+ − * /`, potencia `**`, raíz `np.sqrt(x)`, eˣ `np.exp(x)` |
+| Ver tus datos | Están impresos debajo de la celda «Tus datos»; usa esos números |
+| Un mensaje en rojo | Lee la **última línea**: dice qué falta. Corrige y vuelve a ejecutar esa celda |
+| Antes de entregar | **Entorno de ejecución → Reiniciar y ejecutar todo**, y revisa que todo salga ✔ |
+"""
+
+
+def guia():
+    return md(GUIA)
 
 
 def herramientas(extra=""):
