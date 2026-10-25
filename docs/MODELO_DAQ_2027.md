@@ -116,17 +116,12 @@ Orden: S2 (piloto) y S4, luego S1, luego S3 y S5 a S8.
 - **S5** (24 de octubre): `sesion_05_ruido_y_tendencias/gen_s5.py`; equipo que se calienta (tendencia, ciclo, ruido,
   picos), promedio y mediana móviles; práctica con 60 días de Open-Meteo (ERA5). `prepara_respaldo.py` arma la copia
   de respaldo en `datos/`.
+- **S6** (24 de octubre): `sesion_06_series_de_tiempo_y_pronostico/gen_s6.py`; AR(1) de la toma de aire de un
+  cuarto limpio, MAE, RMSE y validez del 75 %; práctica con el SIMAJ 2022 (33 ventanas por código), elección del
+  orden por AIC (tolerancia de 2) y comparación contra la persistencia. Sustituye al cuaderno del 21 de octubre.
 
 Nota: la hoja busca los resultados sin distinguir mayúsculas; `exportar_csv` rechaza nombres que sólo difieren en
 mayúsculas (p. ej. `U` y `u`).
-
-### Cuadernos que ya existen (21 de octubre)
-
-La carpeta de S6 tiene un cuaderno `S#_AC_PR_#_1_..._2027_GGT.ipynb` armado con el modelo
-anterior (Colab como práctica, formulario sin identificación). Son el punto de partida de la parte B: al rehacer cada
-sesión se les agrega la celda de identificación, los datos por código, la firma y el CSV firmado; se antepone la
-parte A, y el archivo se renombra `S#_AC_CLASE_Colab_ALUMNO.ipynb`. La insignia de Colab del README de la sesión se
-actualiza en el mismo commit.
 
 ## 8. Verificación de cada paquete
 

@@ -13,12 +13,12 @@ Cuadernos de Google Colab y datos de las ocho sesiones del curso. Las presentaci
 | 3 | [Calibración y ajuste de curvas](sesion_03_calibracion_y_ajuste/) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggt13/DAQ_TSU/blob/main/sesion_03_calibracion_y_ajuste/S3_AC_CLASE_Colab_ALUMNO.ipynb) |
 | 4 | [Calidad de la medición: error e incertidumbre](sesion_04_error_e_incertidumbre/) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggt13/DAQ_TSU/blob/main/sesion_04_error_e_incertidumbre/S4_AC_CLASE_Colab_ALUMNO.ipynb) |
 | 5 | [Ruido, filtrado y tendencias](sesion_05_ruido_y_tendencias/) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggt13/DAQ_TSU/blob/main/sesion_05_ruido_y_tendencias/S5_AC_CLASE_Colab_ALUMNO.ipynb) |
-| 6 | [Series de tiempo y pronóstico](sesion_06_series_de_tiempo_y_pronostico/) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggt13/DAQ_TSU/blob/main/sesion_06_series_de_tiempo_y_pronostico/S6_AC_PR_6_1_Calidad_del_aire_y_ARIMA_2027_GGT.ipynb) |
+| 6 | [Series de tiempo y pronóstico](sesion_06_series_de_tiempo_y_pronostico/) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggt13/DAQ_TSU/blob/main/sesion_06_series_de_tiempo_y_pronostico/S6_AC_CLASE_Colab_ALUMNO.ipynb) |
 | 7 | [Monitoreo basado en condición: vibración](sesion_07_vibracion_y_monitoreo/) | en preparación |
 | 8 | [Mantenimiento predictivo e IA](sesion_08_mantenimiento_predictivo_e_ia/) | en preparación |
 
-Las sesiones 1 a 5 ya tienen el modelo que describe la sección siguiente. El cuaderno de S6 es de la primera
-versión 2027 y se está adaptando; la muestra completa está en [`plantillas/`](plantillas/).
+Las sesiones 1 a 6 ya tienen el modelo que describe la sección siguiente; la muestra completa está en
+[`plantillas/`](plantillas/).
 
 ## Cómo se trabaja cada sesión
 
