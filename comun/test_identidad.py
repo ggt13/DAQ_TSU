@@ -61,6 +61,12 @@ with tempfile.TemporaryDirectory() as d:
     open(ruta, "w", encoding="utf-8").write(texto)
     assert not verificar_csv(ruta)
 
+    try:
+        exportar_csv(ruta, a, {"U": 1.0, "u": 2.0}, {"x": [1]})
+        raise AssertionError("debió rechazar claves iguales salvo mayúsculas")
+    except ValueError:
+        pass
+
 # 6. Firma en la figura
 fig, ax = plt.subplots()
 ax.plot([0, 1], [0, 1])
@@ -85,6 +91,8 @@ assert "tu dato 10" in falla(1, lsb, "70 / 2**8 = 0.0684 °C", pred, [70, 10], [
 assert "resultado" in falla(1, lsb, "70 / 2**10 = 0.27 °C", pred, [70, 10], ["°C"])
 assert "unidad" in falla(1, lsb, "70 / 2**10 = 0.0684", pred, [70, 10], ["°C"])
 assert "10 palabras" in falla(1, lsb, "70 / 2**10 = 0.0684 °C", "saltos", [70, 10], ["°C"])
+m = falla(1, lsb, "70 / 2**10 = 0.0684 °C", pred, {"tu desviación estándar s": 0.123091, "tu dato N": 10}, ["°C"])
+assert "tu desviación estándar s" in m and "0.123" not in m
 assert aparece(32000, "32 000 × 60 s") and aparece(32000, "32,000") and aparece(0.0684, "0,0684")
 revisa(3, 32000 * 60 / 86400, "32 000 × 60 / 86 400 = 22.2 días", pred, [32000, 60], ["día"])
 revisa_texto("Conclusión", "El error que obtuve fue 0.0337 °C y el predicho 0.0342 °C, así que el redondeo "

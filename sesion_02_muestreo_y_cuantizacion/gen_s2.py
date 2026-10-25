@@ -151,7 +151,7 @@ la memoria?
    cierre (intervalo de la campaña) 1 pt. Se califica que el resultado sea correcto para **tus** datos y que la
    sustitución y la predicción sean tuyas.
 2. **La hoja de resultados** con el reporte, en 7 días naturales.
-3. **La ficha de campaña** y la foto del registrador colocado, como indique Classroom.
+3. **Tu ficha de campaña** (al final del cuaderno), que sirve para elegir las tres campañas del grupo.
 
 ## Reglas
 - **Archivo → Guardar una copia en Drive** antes de empezar; trabaja en tu copia.
@@ -338,11 +338,13 @@ except ImportError:
     pass
 """),
           cu.md(f"""
-## Siguiente paso · La campaña de 7 días
-1. Programa el RC-5 en ElitechLog con **tu** intervalo de la campaña (celda de abajo) y colócalo en el lugar de tu
-   escenario o en el más parecido que tengas a la mano.
-2. Toma una foto del registrador colocado, con una tarjeta con tu nombre a la vista.
-3. No lo muevas en 7 días. Exporta el archivo desde ElitechLog: lo usaremos en las sesiones 4 y 5.
+## Siguiente paso · Las campañas de 7 días
+El grupo tiene **tres** registradores RC-5, así que se harán tres campañas. Con las fichas de todos, el profesor elige
+tres lugares de la planta y, para cada uno, el intervalo propuesto que mejor cumple las tres reglas.
+1. Copia tu ficha de campaña (celda de abajo) en tu hoja de resultados, en la pregunta 2.
+2. Quienes coloquen un registrador lo programan en ElitechLog con el intervalo elegido, toman una foto del
+   registrador colocado con una tarjeta con su nombre a la vista y no lo mueven en 7 días.
+3. Los tres archivos se comparten con todo el grupo: los usaremos en la sesión 5.
 """),
           cu.code('print(f"Ficha de campaña · {alumno.nombre} · {alumno.codigo} · {LUGAR} · {VARIABLE} · '
                   'intervalo {INTERVALO_CAMPANA_S} s · {CAMPANA_DIAS} días · {MEMORIA * INTERVALO_CAMPANA_S / 86400:.1f} días de memoria")')]
@@ -375,7 +377,7 @@ CLAVE
 for ruta in sorted(glob.glob("S2_*.csv")):
     meta, res, _ = leer_csv_firmado(ruta)
     k = clave_s2(identificar("Alumno Clave", meta["codigo"], SESION))
-    malos = [x for x in k if x in res and abs(res[x] - k[x]) > 0.02 * abs(k[x])]
+    malos = [x for x in k if x not in res or abs(res[x] - k[x]) > 0.02 * abs(k[x])]
     print(f"{ruta}: {meta['nombre']} · huella {'válida' if verificar_csv(ruta) else 'NO VÁLIDA'} · "
           f"fuente {meta.get('fuente')} · " + ("resultados correctos" if not malos else "revisar: " + ", ".join(malos)))
 ''')]

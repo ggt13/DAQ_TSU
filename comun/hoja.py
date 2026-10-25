@@ -39,7 +39,7 @@ def generar(salida, resultados, comparacion, preguntas, tabla, grafica, renglone
             metadatos=(("Fuente de los datos", "fuente"),), csv_ejemplo=None):
     """
     resultados: [(etiqueta_en_csv, texto, formato)].
-    comparacion: (etiqueta_predicho, etiqueta_obtenido, texto) o None.
+    comparacion: (etiqueta_predicho, etiqueta_obtenido, texto[, "porcentaje" | "dentro"]) o None.
     preguntas: [texto].
     tabla: {"encabezado_csv": nombre de la primera columna de la tabla en el CSV,
             "x": (columna_csv, título), "series": [(columna_csv, prefijo_de_leyenda)]}.
@@ -83,13 +83,17 @@ def generar(salida, resultados, comparacion, preguntas, tabla, grafica, renglone
         R.cell(f, 2, busca("resultado:" + clave)).number_format = formato
         fila_de[clave] = f
     if comparacion:
-        kp, ko, texto = comparacion
+        kp, ko, texto = comparacion[:3]
+        modo = comparacion[3] if len(comparacion) > 3 else "porcentaje"
         p, o = f"B{fila_de[kp]}", f"B{fila_de[ko]}"
         f += 2
         R.cell(f, 1, "Predicho contra obtenido").font = NEGRITA
         f += 1
         R.cell(f, 1, texto)
-        R.cell(f, 2, f'=IF(OR({p}="",{o}=""),"",({o}-{p})/{p}*100)').number_format = "0.0"
+        if modo == "dentro":    # ¿el obtenido queda dentro del límite predicho?
+            R.cell(f, 2, f'=IF(OR({p}="",{o}=""),"",IF(ABS({o})<={p},"Sí","No"))')
+        else:
+            R.cell(f, 2, f'=IF(OR({p}="",{o}=""),"",({o}-{p})/{p}*100)').number_format = "0.0"
 
     f += 2
     R.cell(f, 1, "Preguntas del reporte ✎").font = NEGRITA
