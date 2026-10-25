@@ -119,6 +119,9 @@ Orden: S2 (piloto) y S4, luego S1, luego S3 y S5 a S8.
 - **S6** (24 de octubre): `sesion_06_series_de_tiempo_y_pronostico/gen_s6.py`; AR(1) de la toma de aire de un
   cuarto limpio, MAE, RMSE y validez del 75 %; práctica con el SIMAJ 2022 (33 ventanas por código), elección del
   orden por AIC (tolerancia de 2) y comparación contra la persistencia. Sustituye al cuaderno del 21 de octubre.
+- **S7** (25 de octubre): `sesion_07_vibracion_y_monitoreo/gen_s7.py`; BPFO, RMS, velocidad para ISO 10816-3 y
+  umbral con línea base; práctica con 12 casos de la CWRU (umbral fuera de muestra, efecto de la carga, espectro de la
+  envolvente). Bloque opcional con phyphox para el ventilador del grupo.
 
 Nota: la hoja busca los resultados sin distinguir mayúsculas; `exportar_csv` rechaza nombres que sólo difieren en
 mayúsculas (p. ej. `U` y `u`).

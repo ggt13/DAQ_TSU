@@ -14,10 +14,10 @@ Cuadernos de Google Colab y datos de las ocho sesiones del curso. Las presentaci
 | 4 | [Calidad de la medición: error e incertidumbre](sesion_04_error_e_incertidumbre/) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggt13/DAQ_TSU/blob/main/sesion_04_error_e_incertidumbre/S4_AC_CLASE_Colab_ALUMNO.ipynb) |
 | 5 | [Ruido, filtrado y tendencias](sesion_05_ruido_y_tendencias/) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggt13/DAQ_TSU/blob/main/sesion_05_ruido_y_tendencias/S5_AC_CLASE_Colab_ALUMNO.ipynb) |
 | 6 | [Series de tiempo y pronóstico](sesion_06_series_de_tiempo_y_pronostico/) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggt13/DAQ_TSU/blob/main/sesion_06_series_de_tiempo_y_pronostico/S6_AC_CLASE_Colab_ALUMNO.ipynb) |
-| 7 | [Monitoreo basado en condición: vibración](sesion_07_vibracion_y_monitoreo/) | en preparación |
+| 7 | [Monitoreo basado en condición: vibración](sesion_07_vibracion_y_monitoreo/) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggt13/DAQ_TSU/blob/main/sesion_07_vibracion_y_monitoreo/S7_AC_CLASE_Colab_ALUMNO.ipynb) |
 | 8 | [Mantenimiento predictivo e IA](sesion_08_mantenimiento_predictivo_e_ia/) | en preparación |
 
-Las sesiones 1 a 6 ya tienen el modelo que describe la sección siguiente; la muestra completa está en
+Las sesiones 1 a 7 ya tienen el modelo que describe la sección siguiente; la muestra completa está en
 [`plantillas/`](plantillas/).
 
 ## Cómo se trabaja cada sesión
