@@ -113,6 +113,9 @@ Orden: S2 (piloto) y S4, luego S1, luego S3 y S5 a S8.
 - **S3** (24 de octubre): `sesion_03_calibracion_y_ajuste/gen_s3.py`; transmisor de presión y potenciómetros 2025.
 - **S4** (24 de octubre): `sesion_04_error_e_incertidumbre/gen_s4.py`; práctica con la intercomparación de los tres
   RC-5 (`prepara_intercomparacion.py` arma el CSV a partir de los archivos de ElitechLog).
+- **S5** (24 de octubre): `sesion_05_ruido_y_tendencias/gen_s5.py`; equipo que se calienta (tendencia, ciclo, ruido,
+  picos), promedio y mediana móviles; práctica con 60 días de Open-Meteo (ERA5). `prepara_respaldo.py` arma la copia
+  de respaldo en `datos/`.
 
 Nota: la hoja busca los resultados sin distinguir mayúsculas; `exportar_csv` rechaza nombres que sólo difieren en
 mayúsculas (p. ej. `U` y `u`).
