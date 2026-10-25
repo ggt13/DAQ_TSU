@@ -14,7 +14,7 @@ celda «Herramientas del curso»; si se corrige aquí, se regeneran los cuaderno
 | `huella(alumno, resultados)` | Seis caracteres que dependen del código, la sesión y los resultados |
 | `exportar_csv(ruta, alumno, resultados, columnas)` | CSV firmado para la hoja de resultados |
 | `leer_csv_firmado(ruta)` · `verificar_csv(ruta)` | Para el profesor: leer y comprobar la huella de un CSV entregado |
-| `revisa(n, valor, sustitucion, prediccion, datos, unidades)` | Detiene la celda si falta la expresión, la sustitución con los datos propios, el resultado, la unidad o la predicción |
+| `revisa(n, valor, sustitucion, prediccion, datos, unidades)` | Detiene la celda si falta el resultado, la sustitución con los datos propios, el resultado, la unidad o la predicción |
 | `revisa_texto(nombre, texto, numeros, minimo)` | Detiene la celda si la respuesta escrita es corta o no cita los números propios; no revela el valor esperado |
 
 Pruebas: `python test_identidad.py` (validación de la identificación, datos distintos entre alumnos, asignación,

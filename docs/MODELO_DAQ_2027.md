@@ -29,7 +29,8 @@ firma y captura 1 · predicho contra obtenido 3 · preguntas 1 = 10.
 2. **Herramientas del curso** (oculta) e **identificación**.
 3. **Parte A**: tus datos; un ejemplo de cómo se llena un ejercicio con datos que no son los del alumno; cuatro
    ejercicios. Cada uno con «para qué sirve» en una frase. El ★ da la fórmula; los demás, sólo el concepto. El alumno
-   escribe la expresión (✎ a), la sustitución con sus números y su unidad (✎ b) y lo que predice (✎ c);
+   escribe su resultado como número (✎ a; los alumnos no saben Python: calculan con calculadora u hoja de cálculo,
+   y quien sepa puede escribir la operación), la sustitución con sus números y su unidad (✎ b) y lo que predice (✎ c);
    `revisa(n, valor, sustitucion, prediccion, datos, unidades)` detiene la celda si falta algo. Cierre escrito con
    `revisa_texto`, que nombra lo que falta sin revelar el valor esperado.
 4. **Parte B**: tabla de bloques (≤ 70 min + 10 de «Tabla y captura»); datos reales asignados por código con aviso
@@ -38,7 +39,13 @@ firma y captura 1 · predicho contra obtenido 3 · preguntas 1 = 10.
 5. **Cierre**: estado de cada ejercicio (`REGISTRO`) y huella.
 
 `revisa` comprueba que el ejercicio esté completo, no que esté bien: la corrección la da `clave(codigo)`. La misma
-expresión en Python puede copiarse; la sustitución, el resultado y las respuestas llevan los números de cada alumno.
+sustitución, el resultado y las respuestas llevan los números de cada alumno. Donde hay que operar sobre muchos datos
+(desviación estándar, medias, máximos) el cuaderno calcula e imprime, y el alumno usa esos números. Cada cuaderno
+lleva la guía «Cómo se usa este cuaderno · no necesitas saber programar» (`cu.guia()`).
+
+Prueba antes de subir: `python comun/prueba_cuadernos.py N` ejecuta la versión resuelta y la de un alumno que
+escribe números con 4 cifras, con varios códigos; comprueba que la versión en blanco se detenga y que la del
+profesor valide los CSV.
 Los datos personales deben variar lo suficiente para que el ★ casi no se repita en el grupo (en S0, rango × bits da
 35 combinaciones en 40 códigos consecutivos).
 
@@ -103,6 +110,7 @@ Orden: S2 (piloto) y S4, luego S1, luego S3 y S5 a S8.
 - **S2** (piloto, 24 de octubre): `sesion_02_muestreo_y_cuantizacion/gen_s2.py` con `comun/cuaderno.py` y
   `comun/hoja.py`. Es el modelo a seguir para las demás.
 - **S1** (24 de octubre): `sesion_01_datos_y_adquisicion/gen_s1.py`; cadena termistor → divisor → ADC → archivo.
+- **S3** (24 de octubre): `sesion_03_calibracion_y_ajuste/gen_s3.py`; transmisor de presión y potenciómetros 2025.
 - **S4** (24 de octubre): `sesion_04_error_e_incertidumbre/gen_s4.py`; práctica con la intercomparación de los tres
   RC-5 (`prepara_intercomparacion.py` arma el CSV a partir de los archivos de ElitechLog).
 
@@ -111,7 +119,7 @@ mayúsculas (p. ej. `U` y `u`).
 
 ### Cuadernos que ya existen (21 de octubre)
 
-Las carpetas de S3 y S6 tienen un cuaderno `S#_AC_PR_#_1_..._2027_GGT.ipynb` armado con el modelo
+La carpeta de S6 tiene un cuaderno `S#_AC_PR_#_1_..._2027_GGT.ipynb` armado con el modelo
 anterior (Colab como práctica, formulario sin identificación). Son el punto de partida de la parte B: al rehacer cada
 sesión se les agrega la celda de identificación, los datos por código, la firma y el CSV firmado; se antepone la
 parte A, y el archivo se renombra `S#_AC_CLASE_Colab_ALUMNO.ipynb`. La insignia de Colab del README de la sesión se

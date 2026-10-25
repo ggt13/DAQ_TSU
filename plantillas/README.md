@@ -15,7 +15,7 @@ Muestra completa de cómo se arma el trabajo de una sesión. Los cuadernos y hoj
    entrega, cómo se califica y las reglas.
 2. **Herramientas del curso** (celda oculta) e **identificación**.
 3. **Parte A · actividad en clase**: cuatro ejercicios, el ★ primero. Cada uno dice *para qué sirve*; el ★ da la
-   fórmula y los demás sólo el concepto. El alumno escribe la expresión en Python, la sustitución con sus números y
+   fórmula y los demás sólo el concepto. El alumno escribe su resultado (el número que calculó, sin programar), la sustitución con sus números y
    la unidad, y lo que predice para la práctica; `revisa()` detiene la celda si falta algo y dice qué. Cierre escrito
    con su propio número.
 4. **Parte B · práctica**: tabla de bloques con tiempos; datos reales asignados por código; el alumno completa el
@@ -23,8 +23,8 @@ Muestra completa de cómo se arma el trabajo de una sesión. Los cuadernos y hoj
 5. **Cierre**: estado de cada ejercicio y huella.
 
 La revisión automática comprueba que cada ejercicio esté **completo**, no que esté bien: el resultado correcto
-lo califica el profesor con la clave. Dos alumnos pueden escribir la misma expresión en Python; lo que no pueden
-copiar son la sustitución, el resultado y las respuestas, porque llevan los números de cada uno.
+lo califica el profesor con la clave. Los resultados, las sustituciones y las respuestas llevan los números de cada alumno, así que no sirven
+copiados.
 
 [![Abrir en Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggt13/DAQ_TSU/blob/main/plantillas/S0_AC_CLASE_Colab_PLANTILLA.ipynb)
 

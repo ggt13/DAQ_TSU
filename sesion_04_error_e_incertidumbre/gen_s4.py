@@ -119,7 +119,7 @@ SOL = {
 
 
 def celdas(r=False, prof=False, nombre="", codigo=""):
-    h = cu.Huecos(SOL, r or prof)
+    h = cu.Huecos(SOL, r if r else prof)
     C = [cu.md(f"""
 # S4 · Calidad de la medición: error e incertidumbre · ¿Cuánto puedo confiar en mi registrador?
 **Sistemas de adquisición de datos · TSU en Electrónica y Pruebas · Jabil**
@@ -138,7 +138,7 @@ grupo puestos uno junto al otro, cada alumno con un registrador y una hora disti
 ## En qué consiste este cuaderno
 | Parte | Tiempo | Qué haces | Qué produce |
 |---|---|---|---|
-| **A · Actividad en clase** | 30 min | Cuatro ejercicios (★ primero): incertidumbre tipo A, tipo B, combinada y expandida. En cada uno escribes la expresión, la sustitución con tus números y su unidad, y lo que predice. Cierre: ¿tu registrador es compatible? | Tu resultado como valor ± U y tu veredicto |
+| **A · Actividad en clase** | 30 min | Cuatro ejercicios (★ primero): incertidumbre tipo A, tipo B, combinada y expandida. En cada uno escribes tu resultado, la sustitución con tus números y su unidad, y lo que predice. Cierre: ¿tu registrador es compatible? | Tu resultado como valor ± U y tu veredicto |
 | **B · Práctica** | 80 min | Tomas una hora de **tu** RC-5 en la intercomparación del grupo, la comparas contra la mediana de los otros dos y decides si es compatible | Gráficas firmadas, tu conclusión y el archivo `S4_<código>.csv` |
 | **Hoja de resultados** | en la práctica | Importas el CSV en tu hoja de cálculo de Google y contestas las preguntas | El reporte que entregas |
 
@@ -154,6 +154,7 @@ grupo puestos uno junto al otro, cada alumno con un registrador y una hora disti
 - La revisión automática dice si el ejercicio está **completo**, no si está **bien**; eso lo califica el profesor.
 - Si usas un asistente de IA, dilo en tu reporte. Las sustituciones y las respuestas llevan **tus** números.
 """),
+         cu.guia(),
          cu.herramientas(DATOS_S4)]
     C += cu.identificacion(SESION, nombre, codigo)
     C += [cu.md("""
@@ -163,7 +164,7 @@ las lecturas.
 
 **Cómo se llena cada ejercicio.** Ejemplo con otros datos (no son los tuyos):
 ```
-u_A    = np.std(LECTURAS, ddof=1) / np.sqrt(len(LECTURAS))
+u_A    = 0.0200
 SUST_1 = "0.0800 °C / √16 = 0.0200 °C"
 PRED_1 = "con más lecturas esta incertidumbre bajaría, pero sólo como la raíz del número de lecturas"
 ```
@@ -173,14 +174,15 @@ globals().update(datos_s4(alumno))
 print(f"Tu registrador · {MODELO} · exactitud ± {EXACT_C} °C · resolución {RES_C} °C")
 print(f"Referencia: T_REF = {T_REF} °C · N_LECT = {N_LECT} lecturas:")
 print("LECTURAS =", ", ".join(f"{x:.1f}" for x in LECTURAS))
+print(f"Media de tus lecturas = {np.mean(LECTURAS):.3f} °C · desviación estándar s = {np.std(LECTURAS, ddof=1):.4f} °C")
 """),
           cu.md("""
 ### ★ Ejercicio 1 · Incertidumbre tipo A (3 pts)
 **Para qué sirve:** mide cuánto cambian las lecturas por el ruido. Es la parte de la incertidumbre que se reduce
 tomando más lecturas.
 
-**u_A = s / √n**, donde *s* es la desviación estándar de las lecturas y *n* cuántas son. En Python:
-`np.std(LECTURAS, ddof=1)` da *s* y `len(LECTURAS)` da *n*. En la sustitución escribe tu *s*, tu *n* y el resultado.
+**u_A = s / √n**, donde *s* es la desviación estándar de tus lecturas (impresa arriba) y *n* cuántas son
+(`N_LECT`). En la sustitución escribe tu *s*, tu *n* y el resultado.
 """),
           cu.ejercicio(h, 1, "u_A", ["N_LECT", ("tu desviación estándar s", "np.std(LECTURAS, ddof=1)")], ["°C"]),
           cu.md("""
@@ -197,7 +199,7 @@ semiamplitud entre la raíz de tres. Calcula `u_B` en °C.
 **Para qué sirve:** junta todo lo que puede equivocar la medición en un solo número.
 
 Las fuentes independientes se suman **en cuadratura** (raíz de la suma de los cuadrados): tu `u_A`, tu `u_B` y la
-de la resolución, `RES_C / np.sqrt(12)`. Calcula `u_c` en °C.
+de la resolución, que es `RES_C` entre √12. Calcula `u_c` en °C.
 """),
           cu.ejercicio(h, 3, "u_c", [("tu u_A", "u_A"), ("tu u_B", "u_B")], ["°C"]),
           cu.md("""
@@ -221,7 +223,7 @@ firma(fig, alumno); plt.show()
           cu.md("""
 ### Cierre · ¿Tu registrador es compatible? (1 pt)
 Un registrador es **compatible** con la referencia si la diferencia entre su media y la referencia no pasa de su
-`U`. Calcula `delta_C` (media de tus lecturas menos `T_REF`) y escribe tu veredicto con los dos números (al menos
+`U`. Calcula `delta_C` (la media de tus lecturas, impresa arriba, menos `T_REF`) y escribe tu veredicto con los dos números (al menos
 20 palabras).
 """),
           cu.code(h("delta_C") + "\n" + h("VEREDICTO") + "\n\n"
@@ -256,14 +258,16 @@ print(f"B1 · {len(tabla)} lecturas por registrador · {tabla['minuto'].iloc[-1]
           cu.code("""
 MIO, OTROS, INICIO, minuto, T_mio, T_ref = ventana_s4(alumno, tabla)
 print(f"B2 · Tu registrador: {MIO} · referencia: mediana de {' y '.join(OTROS)}")
-print(f"     Tu ventana: del minuto {INICIO} al {INICIO + VENTANA_MIN} · {len(T_mio)} lecturas (T_mio y T_ref)")
+print(f"     Tu ventana: del minuto {INICIO} al {INICIO + VENTANA_MIN} · n = {len(T_mio)} lecturas")
+print(f"     Tu RC-5: media = {np.mean(T_mio):.3f} °C · s = {np.std(T_mio, ddof=1):.4f} °C")
+print(f"     Referencia: media = {np.mean(T_ref):.3f} °C")
 """),
           cu.md("""
 ### B3 · Incertidumbre de tu registrador y diferencia con la referencia
-Con las fórmulas de la parte A, ahora con `T_mio` y los datos del RC-5 (`EXACT_RC5_C`, `RES_RC5_C`):
-1. `u_A_B`: la incertidumbre tipo A de `T_mio`.
+Con las fórmulas de la parte A y los números impresos arriba (el RC-5 tiene exactitud ± 0.5 °C y resolución 0.1 °C):
+1. `u_A_B`: la incertidumbre tipo A de tu RC-5 (con su *s* y su *n*).
 2. `U_B`: la incertidumbre expandida (k = 2), combinando `u_A_B`, la del fabricante y la de la resolución.
-3. `delta_B`: la media de `T_mio` menos la media de `T_ref`.
+3. `delta_B`: la media de tu RC-5 menos la media de la referencia.
 """),
           cu.code(h("u_A_B") + "\n" + h("U_B") + "\n" + h("delta_B") + """
 
@@ -379,6 +383,8 @@ if __name__ == "__main__":
     generar_hoja()
     print("listo:", ALUMNO, PROF, HOJA, sep="\n  ")
     if len(sys.argv) == 3 and sys.argv[1] == "--prueba":
+        cu.guardar(celdas(r="numero", nombre="Alumno De Prueba", codigo="217654321"),
+                   os.path.join(sys.argv[2], f"{SESION}_numeros.ipynb"))
         ruta = cu.guardar(celdas(r=True, nombre="Alumno De Prueba", codigo="217654321"),
                           os.path.join(sys.argv[2], "S4_resuelto.ipynb"))
         print("  prueba:", ruta)

@@ -10,15 +10,15 @@ Cuadernos de Google Colab y datos de las ocho sesiones del curso. Las presentaci
 |---|---|---|
 | 1 | [Datos en la industria y sistemas de adquisición](sesion_01_datos_y_adquisicion/) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggt13/DAQ_TSU/blob/main/sesion_01_datos_y_adquisicion/S1_AC_CLASE_Colab_ALUMNO.ipynb) |
 | 2 | [Muestreo, cuantización y registro](sesion_02_muestreo_y_cuantizacion/) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggt13/DAQ_TSU/blob/main/sesion_02_muestreo_y_cuantizacion/S2_AC_CLASE_Colab_ALUMNO.ipynb) |
-| 3 | [Calibración y ajuste de curvas](sesion_03_calibracion_y_ajuste/) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggt13/DAQ_TSU/blob/main/sesion_03_calibracion_y_ajuste/S3_AC_PR_3_1_Calibracion_de_potenciometros_2027_GGT.ipynb) |
+| 3 | [Calibración y ajuste de curvas](sesion_03_calibracion_y_ajuste/) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggt13/DAQ_TSU/blob/main/sesion_03_calibracion_y_ajuste/S3_AC_CLASE_Colab_ALUMNO.ipynb) |
 | 4 | [Calidad de la medición: error e incertidumbre](sesion_04_error_e_incertidumbre/) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggt13/DAQ_TSU/blob/main/sesion_04_error_e_incertidumbre/S4_AC_CLASE_Colab_ALUMNO.ipynb) |
 | 5 | [Ruido, filtrado y tendencias](sesion_05_ruido_y_tendencias/) | en preparación |
 | 6 | [Series de tiempo y pronóstico](sesion_06_series_de_tiempo_y_pronostico/) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggt13/DAQ_TSU/blob/main/sesion_06_series_de_tiempo_y_pronostico/S6_AC_PR_6_1_Calidad_del_aire_y_ARIMA_2027_GGT.ipynb) |
 | 7 | [Monitoreo basado en condición: vibración](sesion_07_vibracion_y_monitoreo/) | en preparación |
 | 8 | [Mantenimiento predictivo e IA](sesion_08_mantenimiento_predictivo_e_ia/) | en preparación |
 
-Las sesiones 1, 2 y 4 ya tienen el modelo que describe la sección siguiente. Los cuadernos de S3 y S6 son de la
-primera versión 2027 y se están adaptando; la muestra completa está en [`plantillas/`](plantillas/).
+Las sesiones 1 a 4 ya tienen el modelo que describe la sección siguiente. El cuaderno de S6 es de la primera
+versión 2027 y se está adaptando; la muestra completa está en [`plantillas/`](plantillas/).
 
 ## Cómo se trabaja cada sesión
 
@@ -35,7 +35,8 @@ primera versión 2027 y se están adaptando; la muestra completa está en [`plan
 1. Abre el cuaderno con la insignia **Open in Colab** y guarda tu copia: **Archivo → Guardar una copia en Drive**.
 2. Escribe tu **nombre completo y tu código** en la celda de identificación. Sin ellos el cuaderno no avanza.
 3. **Tus datos dependen de tu código**: los números de tus compañeros son distintos y copiar un resultado no sirve.
-4. En cada ejercicio **escribes** tres cosas: la expresión en Python, la sustitución con tus números y su unidad, y lo
+4. **No necesitas saber programar.** En cada ejercicio escribes tres cosas: el número que calculaste (con calculadora o
+   con tu hoja de cálculo), la sustitución con tus números y su unidad, y lo
    que predice para la práctica. Si falta alguna, la celda se detiene y dice qué falta.
 5. Cada gráfica sale con tu nombre, tu código, la fecha y una **huella** de seis caracteres. No la borres.
 6. La parte B descarga `S#_<código>.csv`. En tu hoja de resultados: pestaña **CSV → Archivo → Importar → Subir →

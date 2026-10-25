@@ -8,7 +8,7 @@ Estructura que deben seguir los cuadernos de las ocho sesiones:
   1. Objetivo y en qué consiste el cuaderno (situación, qué se hace, qué se entrega, cómo se califica).
   2. Herramientas del curso (oculta) e identificación.
   3. Parte A · actividad en clase: cuatro ejercicios (★ primero). En cada uno el alumno ESCRIBE la expresión
-     en Python, la sustitución con sus números y su unidad, y lo que predice para la práctica. Ninguna celda
+     su resultado, la sustitución con sus números y su unidad, y lo que predice para la práctica. Ninguna celda
      avanza si falta algo de eso.
   4. Parte B · práctica: datos reales asignados por código; el alumno completa el cálculo clave y escribe su
      conclusión con sus números; CSV firmado para la hoja de resultados.
@@ -18,6 +18,9 @@ import os
 import sys
 
 import nbformat as nbf
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "comun"))
+from cuaderno import GUIA  # noqa: E402
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 IDENTIDAD = os.path.join(AQUI, "..", "comun", "identidad.py")
@@ -41,7 +44,6 @@ SOLUCION = {
     "PRED_4": '"si registro más espaciado que este intervalo la gráfica puede mostrar un ciclo falso más lento que el real"',
     "CIERRE": ('f"Si registro cada {intervalo_max_min:.2f} min la memoria dura {MEMORIA * intervalo_max_min * 60 / 86400:.1f} '
                'días; me conviene porque cubre el ciclo del horno y la campaña completa sin perder información del proceso"'),
-    "error_obtenido_C": "float(np.max(np.abs(error)))",
     "CONCLUSION_B": ('f"El error máximo obtenido fue {error_obtenido_C:.4f} °C y el predicho {error_max_C:.4f} °C; quedó dentro '
                      'porque el redondeo de mi convertidor nunca se aleja más de medio escalón del valor real"'),
 }
@@ -68,7 +70,7 @@ def code(texto, titulo=None):
 
 def ejercicio(n, var, datos, unidades, r):
     return code(f"""
-# ✎ {n}a · La expresión en Python, con las variables de tus datos
+# ✎ {n}a · Tu resultado: el número que calculaste (punto decimal, al menos 3 cifras significativas)
 {hueco(var, r)}
 # ✎ {n}b · La sustitución con TUS números, el resultado y la unidad
 {hueco(f"SUST_{n}", r)}
@@ -101,7 +103,7 @@ datos salen de su código.
 ## En qué consiste este cuaderno
 | Parte | Tiempo | Qué haces | Qué produce |
 |---|---|---|---|
-| **A · Actividad en clase** | 30 min | Cuatro ejercicios (★ primero). En cada uno **escribes** la expresión en Python, la sustitución con tus números y su unidad, y lo que predice para la práctica | Tus cuatro resultados y tus predicciones |
+| **A · Actividad en clase** | 30 min | Cuatro ejercicios (★ primero). En cada uno **escribes** tu resultado, la sustitución con tus números y su unidad, y lo que predice para la práctica | Tus cuatro resultados y tus predicciones |
 | **B · Práctica** | 80 min | Tomas una semana de temperatura real de Guadalajara, la registras con **tu** convertidor y mides el error | Una gráfica firmada, tu conclusión y el archivo `S0_<código>.csv` |
 | **Hoja de resultados** | en la práctica | Importas el CSV en tu hoja de cálculo de Google; la tabla y la gráfica se arman solas; contestas las preguntas | El reporte que entregas |
 
@@ -117,6 +119,7 @@ datos salen de su código.
 - La revisión automática dice si el ejercicio está **completo**, no si está **bien**; eso lo califica el profesor.
 - Si usas un asistente de IA, dilo en tu reporte. Las sustituciones y las respuestas deben llevar **tus** números.
 """),
+        md(GUIA),
         code(herramientas + "\n\nimport matplotlib.pyplot as plt\n\n"
              "def completa(valor, que):\n"
              "    if valor is None:\n"
@@ -137,7 +140,7 @@ para ver **tus** datos.
 
 **Cómo se llena cada ejercicio.** Ejemplo con otros datos (no son los tuyos):
 ```
-lsb_C  = RANGO_C / 2 ** N_BITS
+lsb_C  = 0.781
 SUST_1 = "50 / 2**6 = 0.781 °C"
 PRED_1 = "las lecturas sólo podrán cambiar en saltos de unas ocho décimas de grado"
 ```
@@ -157,8 +160,8 @@ print(f"           intervalo de registro {INTERVALO_S} s · periodo del horno {P
 **Para qué sirve:** la resolución es el cambio más pequeño que el registrador puede distinguir. Si es mayor que
 la variación que te interesa, el registro no sirve.
 
-El convertidor divide el rango en 2ᴺ escalones; un escalón (LSB) vale **LSB = rango / 2ᴺ**. En Python, la potencia
-se escribe `2 ** N_BITS`.
+El convertidor divide el rango en 2ᴺ escalones; un escalón (LSB) vale **LSB = rango / 2ᴺ**. En la calculadora, 2ᴺ es
+la tecla de potencia.
 """),
         ejercicio(1, "lsb_C", ["RANGO_C", "N_BITS"], ["°C"], r),
         md("""
@@ -216,7 +219,7 @@ incluye el número de días que calculaste.
 |---|---|---|
 | B1 · Datos | 10 | Descarga una semana de temperatura real de Guadalajara, hora por hora ([Open-Meteo](https://open-meteo.com/), CC BY 4.0). La semana depende de tu código |
 | B2 · Registro | 20 | La registras con **tu** convertidor y comparas la señal real con la registrada |
-| B3 · Error | 20 | Calculas el error máximo obtenido y lo comparas con el predicho |
+| B3 · Error | 20 | Ves el error de cada lectura contra el que predijiste |
 | B4 · Conclusión | 20 | Escribes qué encontraste, con tus números |
 | Tabla y captura | 10 | Descargas el CSV y lo importas en tu hoja de resultados |
 """),
@@ -254,12 +257,11 @@ firma(fig, alumno); plt.show()
 """),
         md("""
 ### B3 · Error máximo obtenido
-El arreglo `error` tiene la diferencia entre lo registrado y lo real en cada hora. El error máximo es el **mayor
-valor absoluto** de ese arreglo. Pistas: `np.abs(...)` da el valor absoluto y `np.max(...)` el mayor.
+La gráfica muestra, hora por hora, la diferencia entre lo registrado y lo real, con tu error predicho como banda
+roja. El cuaderno imprime el error máximo obtenido (la mayor diferencia, sin signo).
 """),
-        code(hueco("error_obtenido_C", r) + """
-
-completa(error_obtenido_C, "el error máximo obtenido")
+        code("""
+error_obtenido_C = float(np.max(np.abs(error)))
 RESULTADOS = {"lsb_C": lsb_C, "error_predicho_C": error_max_C, "error_obtenido_C": float(error_obtenido_C)}
 fig, ax = plt.subplots(figsize=(9, 3.2))
 ax.plot(error, label="error de cada lectura")
