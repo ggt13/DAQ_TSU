@@ -8,7 +8,7 @@ Cuadernos de Google Colab y datos de las ocho sesiones del curso. Las presentaci
 
 | # | Tema | Cuaderno |
 |---|---|---|
-| 1 | [Datos en la industria y sistemas de adquisición](sesion_01_datos_y_adquisicion/) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggt13/DAQ_TSU/blob/main/sesion_01_datos_y_adquisicion/S1_AC_PR_1_1_Del_sensor_al_archivo_2027_GGT.ipynb) |
+| 1 | [Datos en la industria y sistemas de adquisición](sesion_01_datos_y_adquisicion/) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggt13/DAQ_TSU/blob/main/sesion_01_datos_y_adquisicion/S1_AC_CLASE_Colab_ALUMNO.ipynb) |
 | 2 | [Muestreo, cuantización y registro](sesion_02_muestreo_y_cuantizacion/) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggt13/DAQ_TSU/blob/main/sesion_02_muestreo_y_cuantizacion/S2_AC_CLASE_Colab_ALUMNO.ipynb) |
 | 3 | [Calibración y ajuste de curvas](sesion_03_calibracion_y_ajuste/) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggt13/DAQ_TSU/blob/main/sesion_03_calibracion_y_ajuste/S3_AC_PR_3_1_Calibracion_de_potenciometros_2027_GGT.ipynb) |
 | 4 | [Calidad de la medición: error e incertidumbre](sesion_04_error_e_incertidumbre/) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggt13/DAQ_TSU/blob/main/sesion_04_error_e_incertidumbre/S4_AC_CLASE_Colab_ALUMNO.ipynb) |
@@ -17,7 +17,7 @@ Cuadernos de Google Colab y datos de las ocho sesiones del curso. Las presentaci
 | 7 | [Monitoreo basado en condición: vibración](sesion_07_vibracion_y_monitoreo/) | en preparación |
 | 8 | [Mantenimiento predictivo e IA](sesion_08_mantenimiento_predictivo_e_ia/) | en preparación |
 
-Las sesiones 2 y 4 ya tienen el modelo que describe la sección siguiente. Los cuadernos de S1, S3 y S6 son de la
+Las sesiones 1, 2 y 4 ya tienen el modelo que describe la sección siguiente. Los cuadernos de S3 y S6 son de la
 primera versión 2027 y se están adaptando; la muestra completa está en [`plantillas/`](plantillas/).
 
 ## Cómo se trabaja cada sesión

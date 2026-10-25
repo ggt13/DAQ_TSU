@@ -1,15 +1,22 @@
 # Sesión 1 · Datos en la industria y sistemas de adquisición
 
-**Práctica (Colab):** Tres divisores con un termistor NTC: de la temperatura al voltaje y a un archivo CSV; lectura del registro de un logger.
+**Del sensor al archivo.** Cada alumno sigue un dato por toda la cadena de adquisición con su propia resistencia fija,
+temperatura de trabajo e intervalo: temperatura → resistencia del termistor NTC → voltaje del divisor → cuenta del
+convertidor de 10 bits → renglón de un archivo, y calcula cuántos datos genera un sensor al día. En la práctica pasa
+una semana real de temperatura de Guadalajara por su cadena, reconstruye la temperatura desde las cuentas y mide
+cuánto se pierde.
 
-[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggt13/DAQ_TSU/blob/main/sesion_01_datos_y_adquisicion/S1_AC_PR_1_1_Del_sensor_al_archivo_2027_GGT.ipynb)
-
-No necesitas programar: abre el cuaderno, guarda tu copia (Archivo → Guardar una copia en Drive), ejecuta las celdas en orden y cambia solo los campos del formulario.
+[![Abrir en Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggt13/DAQ_TSU/blob/main/sesion_01_datos_y_adquisicion/S1_AC_CLASE_Colab_ALUMNO.ipynb)
 
 | Archivo | Qué es |
 |---|---|
-| `S1_AC_PR_1_1_Del_sensor_al_archivo_2027_GGT.ipynb` | Cuaderno de la práctica |
+| `S1_AC_CLASE_Colab_ALUMNO.ipynb` | Cuaderno de la sesión: parte A (actividad en clase) y parte B (práctica) |
+| `S1_AC_PRACT_Hoja_de_resultados_ALUMNO.xlsx` | Hoja de resultados; se sube a Drive y se abre como hoja de cálculo de Google |
+| `gen_s1.py` | Genera el cuaderno, la hoja y la versión del profesor (ésta no se sube al repositorio) |
 
-**Origen de los datos:** Ecuación del termistor y registro simulado de un día de oficina (dentro del cuaderno). Puedes subir el CSV de tu logger.
+| Parte | Datos |
+|---|---|
+| A · actividad en clase | Resistencia fija, temperatura e intervalo por código; termistor 10 kΩ, β = 3950 K, 5 V, 10 bits |
+| B · práctica | Una semana de temperatura horaria de Guadalajara ([Open-Meteo](https://open-meteo.com/), CC BY 4.0), semana por código |
 
-Las presentaciones, la hoja de cálculo, las instrucciones y las entregas están en Google Classroom.
+Las presentaciones, la hoja de práctica y el cuestionario están en Classroom.
