@@ -95,4 +95,10 @@ m = falla("Conclusión", "El error fue 0.0337 y quedó dentro de lo esperado seg
           {"el error obtenido": 0.0337, "el error predicho": 0.0342}, f=revisa_texto)
 assert "el error predicho" in m and "0.0342" not in m
 
+# 8. Números escritos como los escribe una persona
+for x, t, esperado in [(34271.6, "= 34272 s", True), (123456.7, "= 123456.7 s", True), (0.0342, "0.03", False),
+                       (120.0, "1200", False), (120.0, "= 120.0 h", True), (0.0342, "0.034200", True),
+                       (0.390625, "0.39 %", True), (10, "100", False), (10, "2**10", True)]:
+    assert aparece(x, t) == esperado, (x, t)
+
 print("identidad.py: todas las pruebas pasan")

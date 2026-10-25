@@ -186,7 +186,12 @@ def _formas(x):
     formas = set()
     if x == int(x) and abs(x) < 1e9:
         formas.add(str(int(x)))
-    for cifras in (2, 3, 4):
+    if abs(x) >= 100:
+        formas.add(str(int(round(x))))                       # 34271.6 escrito como 34272
+    if abs(x) >= 1:
+        for dec in (1, 2):
+            formas.add(f"{x:.{dec}f}".rstrip("0").rstrip("."))  # 123456.7 con sus decimales
+    for cifras in (2, 3, 4, 5, 6):
         g = f"{x:.{cifras}g}"
         if "e" not in g:
             formas.add(g)
@@ -196,7 +201,10 @@ def _formas(x):
 def aparece(x, texto):
     """True si el número x está escrito en el texto (sin confundir 0.03 con 0.0337)."""
     t = _normaliza(texto)
-    return any(re.search(r"(?<![\d.])" + re.escape(f) + r"0*(?![\d])", t) for f in _formas(x))
+    def patron(f):
+        cola = r"0*" if "." in f else r"(?:\.0*)?"            # 0.0342 = 0.034200 · 120 = 120.0, pero no 1200
+        return r"(?<![\d.])" + re.escape(f) + cola + r"(?![\d])"
+    return any(re.search(patron(f), t) for f in _formas(x))
 
 
 def _palabras(texto):

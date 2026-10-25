@@ -1,15 +1,23 @@
 # Sesión 2 · Muestreo, cuantización y registro
 
-**Práctica (Colab):** Aliasing con un registro que «miente» y decisión del intervalo de registro para la campaña de 7 días.
+**¿Cada cuánto registrar sin que el registro mienta?** Cada alumno recibe un escenario de planta (almacén, refrigerador,
+cuarto de servidores…) con su propio periodo, rango y convertidor; decide el intervalo máximo, reconoce el aliasing,
+calcula el error de cuantización y la duración de la memoria, y elige el intervalo de su campaña de 7 días con el
+Elitech RC-5. En la práctica registra 60 días reales de temperatura de Guadalajara con un intervalo demasiado largo,
+cuenta el ciclo falso que aparece y lo compara con el que predijo.
 
-[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggt13/DAQ_TSU/blob/main/sesion_02_muestreo_y_cuantizacion/S2_AC_PR_2_1_Aliasing_y_campana_2027_GGT.ipynb)
-
-No necesitas programar: abre el cuaderno, guarda tu copia (Archivo → Guardar una copia en Drive), ejecuta las celdas en orden y cambia solo los campos del formulario.
+[![Abrir en Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggt13/DAQ_TSU/blob/main/sesion_02_muestreo_y_cuantizacion/S2_AC_CLASE_Colab_ALUMNO.ipynb)
 
 | Archivo | Qué es |
 |---|---|
-| `S2_AC_PR_2_1_Aliasing_y_campana_2027_GGT.ipynb` | Cuaderno de la práctica |
+| `S2_AC_CLASE_Colab_ALUMNO.ipynb` | Cuaderno de la sesión: parte A (actividad en clase) y parte B (práctica) |
+| `S2_AC_PRACT_Hoja_de_resultados_ALUMNO.xlsx` | Hoja de resultados; se sube a Drive y se abre como hoja de cálculo de Google |
+| `gen_s2.py` | Genera el cuaderno, la hoja y la versión del profesor (ésta no se sube al repositorio) |
 
-**Origen de los datos:** Simulados dentro del cuaderno.
+| Parte | Datos |
+|---|---|
+| A · actividad en clase | Escenario, periodo, rango y convertidor asignados por código |
+| B · práctica | 60 días de temperatura horaria de Guadalajara ([Open-Meteo](https://open-meteo.com/), CC BY 4.0), fechas e intervalo de registro por código |
+| Campaña | Registro de 7 días con el Elitech RC-5, con el intervalo que eligió cada alumno; se usa en las sesiones 4 y 5 |
 
-Las presentaciones, la hoja de cálculo, las instrucciones y las entregas están en Google Classroom.
+Las presentaciones, la hoja de práctica y el cuestionario están en Classroom.
