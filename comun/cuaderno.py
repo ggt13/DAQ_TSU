@@ -24,6 +24,9 @@ def code(texto, titulo=None):
     return c
 
 
+TEXTOS = {"CIERRE", "VEREDICTO", "JUSTIFICACION", "CONCLUSION_B"}
+
+
 class Huecos:
     """Lo que escribe el alumno. En la versión ALUMNO queda vacío; en la PROF y en la de prueba, resuelto."""
 
@@ -34,8 +37,9 @@ class Huecos:
     def __call__(self, var, nota="✎ escribe aquí", vacio=None):
         if self.resuelto:
             return f"{var} = {self.sol[var]}"
-        if vacio is None:
-            vacio = '""' if var.isupper() else "None"
+        if vacio is None:   # texto: sustituciones, predicciones y respuestas escritas; lo demás, números
+            texto = var.startswith(("SUST_", "PRED_")) or var in TEXTOS
+            vacio = '""' if texto else "None"
         return f"{var} = {vacio}   # {nota}"
 
 
