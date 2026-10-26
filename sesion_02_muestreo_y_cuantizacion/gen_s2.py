@@ -28,18 +28,18 @@ MEMORIA = 32000              # lecturas del Elitech RC-5
 DT_MIN_RC5_S = 10            # intervalo mínimo del RC-5, en segundos
 CAMPANA_DIAS = 7
 ESCENARIOS = [  # lugar, variable, fenómeno más rápido, periodo base (s)
-    ("Almacén de componentes sensibles a humedad", "HR", "ciclo del aire acondicionado", 900),
+    ("Almacén de componentes con aire acondicionado", "T", "ciclo del aire acondicionado", 900),
     ("Refrigerador de pasta de soldadura", "T", "ciclo del compresor", 1200),
     ("Cuarto de servidores", "T", "ciclo del aire acondicionado", 480),
     ("Línea SMT, ambiente", "T", "cambio de turno", 28800),
     ("Oficina con ventana al poniente", "T", "ciclo día–noche", 86400),
-    ("Bodega de producto terminado", "HR", "ciclo día–noche", 86400),
+    ("Bodega de producto terminado", "T", "ciclo día–noche", 86400),
     ("Área de empaque junto a la puerta de andén", "T", "apertura de la puerta", 300),
-    ("Cámara de prueba de humedad con control on-off", "HR", "ciclo del control", 90),
+    ("Cámara de prueba térmica con control on-off", "T", "ciclo del control", 90),
     ("Gabinete de control con ventilador por termostato", "T", "encendido del ventilador", 100),
     ("Almacén de reactivos con extractor temporizado", "T", "ciclo del extractor", 1800),
 ]
-RANGOS = {"T": (-30.0, 70.0, "°C"), "HR": (0.0, 100.0, "%")}
+RANGOS = {"T": (-30.0, 70.0, "°C")}   # el RC-5 sólo mide temperatura
 
 
 def datos_s2(alumno):
@@ -345,7 +345,8 @@ tres lugares de la planta y, para cada uno, el intervalo propuesto que mejor cum
 1. Copia tu ficha de campaña (celda de abajo) en tu hoja de resultados, en la pregunta 2.
 2. Quienes coloquen un registrador lo programan en ElitechLog con el intervalo elegido, toman una foto del
    registrador colocado con una tarjeta con su nombre a la vista y no lo mueven en 7 días.
-3. Los tres archivos se comparten con todo el grupo: los usaremos en la sesión 5.
+3. Los tres archivos se comparten con todo el grupo: los analizarás en el proyecto integrador con las
+   herramientas de ruido, tendencias y pronóstico de las sesiones 5 y 6.
 """),
           cu.code('print(f"Ficha de campaña · {alumno.nombre} · {alumno.codigo} · {LUGAR} · {VARIABLE} · '
                   'intervalo {INTERVALO_CAMPANA_S} s · {CAMPANA_DIAS} días · {MEMORIA * INTERVALO_CAMPANA_S / 86400:.1f} días de memoria")')]
