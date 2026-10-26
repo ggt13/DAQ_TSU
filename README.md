@@ -56,6 +56,9 @@ Si usas un asistente de IA, dilo en tu reporte; las preguntas piden tus propios 
 | Hojas de resultados y reportes | 30 % | 8 |
 | Reporte final del proyecto integrador | 30 % | 1 |
 
+El proyecto integrador es individual: un plan de adquisición para una variable de tu trabajo, comprobado con un
+registro real. Guía, formato y cuaderno en [`proyecto_integrador/`](proyecto_integrador/).
+
 ## Cómo usar este repositorio
 
 No necesitas cuenta de GitHub ni instalar nada.
