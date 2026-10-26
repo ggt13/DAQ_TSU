@@ -149,3 +149,14 @@ mayúsculas (p. ej. `U` y `u`).
 - [ ] Archivo de muestra exportado de ElitechLog para escribir el lector del RC-5.
 - [ ] Ventiladores para S7; registradores de temperatura y humedad opcionales.
 - [ ] Programa DAQ: corregir la asignación (Colab en clase, hoja de resultados en la práctica) y validar horas y créditos.
+
+## Proyecto integrador (25 de octubre de 2026)
+
+Individual, con la estructura del de Sensores 2027: cuatro campos al cierre de cada sesión (se revisan, no se
+califican) y cuatro secciones finales. Ocho bloques 30 % · plan de adquisición 25 % · registro contra plan 25 % ·
+autoevaluación y reflexión 20 %. El registro real sale de un Govee H5075 en préstamo (10 equipos, cinco turnos de 7
+días de la semana 2 a la 7), de datos del área del alumno (con permiso, anonimizados) o de una de las tres campañas
+RC-5. Las predicciones se escriben con fecha en la semana 2, antes del registro. Fuente única `proyecto_integrador/
+datos_pi.py`; cuaderno `gen_pi.py` (lector tolerante de CSV y Excel, calidad, filtro, tendencia, ciclo dominante,
+alarmas con confirmación e histéresis, tabla plan contra registro, CSV firmado con la fuente dentro de la huella);
+formato `gen_formato_pi.py`; prueba `prueba_pi.py`; campañas con `prepara_campana.py`.
