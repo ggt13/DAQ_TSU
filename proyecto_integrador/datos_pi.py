@@ -23,7 +23,7 @@ FORMATO = "F_Proyecto_integrador_DAQ_2027_GGT.docx"
 SESIONES = [
     dict(n=1, tema="Datos en la industria y sistemas de adquisición",
          que="la cadena del termistor al archivo",
-         ecuacion="V = Vcc·R_F/(R_T + R_F)   N = ROUND(V/Vcc·N_max)   kB/día = (86 400/Δt)·bytes/1000",
+         ecuacion="V = Vcc·R_F/(R_T + R_F)   N = ROUND(V/q), q = Vcc/2ᴺ   kB/día = (86 400/Δt)·bytes/1000",
          grafica="La semana de temperatura original contra la reconstruida desde las cuentas del convertidor",
          pregunta="¿Qué datos se registran hoy en tu área, quién los revisa y qué decisión se toma con ellos?"),
     dict(n=2, tema="Muestreo, cuantización y registro",
