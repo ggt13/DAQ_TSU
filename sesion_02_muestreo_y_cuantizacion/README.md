@@ -18,6 +18,6 @@ cuenta el ciclo falso que aparece y lo compara con el que predijo.
 |---|---|
 | A · actividad en clase | Escenario, periodo, rango y convertidor asignados por código |
 | B · práctica | 60 días de temperatura horaria de Guadalajara ([Open-Meteo](https://open-meteo.com/), CC BY 4.0), fechas e intervalo de registro por código |
-| Campañas | Tres registros de 7 días con los tres Elitech RC-5, en lugares e intervalos elegidos con las fichas del grupo; se usan en la sesión 5 |
+| Campañas | Tres registros de 7 días con los tres Elitech RC-5, en lugares e intervalos elegidos con las fichas del grupo; se analizan en el proyecto integrador con las herramientas de las sesiones 5 y 6 |
 
 Las presentaciones, la hoja de práctica y el cuestionario están en Classroom.
