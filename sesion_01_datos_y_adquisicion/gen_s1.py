@@ -23,7 +23,10 @@ HOJA = os.path.join(AQUI, "S1_AC_PRACT_Hoja_de_resultados_ALUMNO.xlsx")
 COLAB = cu.REPO + CARPETA + "/S1_AC_CLASE_Colab_ALUMNO.ipynb"
 
 DATOS_S1 = '''
-R25, BETA, VCC, N_MAX = 10000.0, 3950.0, 5.0, 1023     # termistor NTC 10 kΩ, β = 3950 K; Arduino, 10 bits
+R25, BETA, VCC = 10000.0, 3950.0, 5.0                 # termistor NTC 10 kΩ, β = 3950 K; alimentación de 5 V
+N_BITS = 10                                            # convertidor de 10 bits
+Q_V = VCC / 2 ** N_BITS                                # escalón: 5 V / 1024 = 4.883 mV (convención del curso)
+N_MAX = 2 ** N_BITS - 1                                # cuenta máxima: 1023
 T25_K = 298.15
 BYTES_LINEA = 25                                       # «2027-02-05 08:00:00,0512» y el salto de línea
 RF_OPCIONES = [2200, 3300, 4700, 6800, 10000, 15000, 22000, 33000, 47000, 68000]
@@ -45,7 +48,7 @@ def v_div(t_c, rf):
 
 def t_de_cuenta(n, rf):
     """De la cuenta del ADC a la temperatura: la cadena al revés."""
-    v = np.clip(np.asarray(n, float), 0.5, N_MAX - 0.5) * VCC / N_MAX
+    v = np.clip(np.asarray(n, float), 0.5, N_MAX - 0.5) * Q_V
     r = rf * (VCC / v - 1)
     return 1 / (1 / T25_K + np.log(r / R25) / BETA) - 273.15
 
@@ -54,7 +57,7 @@ def clave_s1(alumno):
     d = datos_s1(alumno)
     r = float(r_ntc(d["T_OBJ"]))
     v = VCC * d["RF"] / (r + d["RF"])
-    return {"R_T": r, "V_T": v, "N_T": int(round(v / VCC * N_MAX)), "kB_dia": 86400 / d["DT_S"] * BYTES_LINEA / 1000}
+    return {"R_T": r, "V_T": v, "N_T": int(min(round(v / Q_V), N_MAX)), "kB_dia": 86400 / d["DT_S"] * BYTES_LINEA / 1000}
 '''
 
 SOL = {
@@ -64,15 +67,15 @@ SOL = {
     "V_T": "VCC * RF / (R_T + RF)",
     "SUST_2": 'f"5 × {RF} / ({R_T:.1f} + {RF}) = {V_T:.4f} V"',
     "PRED_2": '"el voltaje de salida sube cuando la temperatura sube porque la resistencia de arriba se hace más pequeña"',
-    "N_T": "round(V_T / VCC * N_MAX)",
-    "SUST_3": 'f"{V_T:.4f} / 5 × 1023 = {N_T} cuentas"',
+    "N_T": "min(round(V_T / Q_V), N_MAX)",
+    "SUST_3": 'f"{V_T:.4f} V / (5 V / 1024) = {N_T} cuentas"',
     "PRED_3": '"el registrador sólo guarda números enteros así que dos temperaturas muy cercanas pueden dar la misma cuenta"',
     "kB_dia": "86400 / DT_S * BYTES_LINEA / 1000",
     "SUST_4": 'f"86400 / {DT_S} × 25 / 1000 = {kB_dia:.2f} kB"',
     "PRED_4": '"con este intervalo cada sensor genera ese volumen al día y con cientos de sensores la planta acumula mucho"',
     "CIERRE": ('f"A {T_OBJ} °C mi termistor tiene {R_T:.0f} Ω, el divisor entrega {V_T:.3f} V y el ADC guarda la cuenta '
                '{N_T}; ese número entero es lo único que llega al archivo de la planta"'),
-    "PASO_V": "VCC / N_MAX",
+    "PASO_V": "VCC / 2 ** N_BITS",
     "resol_pred_C": "PASO_V / S_V_C / 2",
     "CONCLUSION_B": ('f"Predije un error máximo de {resol_pred_C:.4f} °C y obtuve {error_obt_C:.4f} °C; la diferencia viene '
                      'de que la sensibilidad del divisor cambia con la temperatura a lo largo de la semana"'),
@@ -121,7 +124,8 @@ Cada alumno tiene su propia resistencia fija, su temperatura de trabajo y su int
     C += [cu.md("""
 ## Parte A · Actividad en clase (30 min)
 Datos comunes: termistor de `R25` = 10 000 Ω a 25 °C con `BETA` = 3950 K; alimentación `VCC` = 5 V; convertidor de
-10 bits (cuenta máxima `N_MAX` = 1023); cada renglón del archivo ocupa `BYTES_LINEA` = 25 bytes. Ejecuta la celda para
+10 bits: el rango de 0 a `VCC` se divide en 2¹⁰ = 1024 escalones de `Q_V` = 5 V / 1024 = 4.883 mV, y la cuenta va
+de 0 a `N_MAX` = 1023; cada renglón del archivo ocupa `BYTES_LINEA` = 25 bytes. Ejecuta la celda para
 ver **tus** datos.
 
 **Cómo se llena cada ejercicio.** Ejemplo con otros datos (no son los tuyos):
@@ -155,8 +159,8 @@ queda abajo**. Calcula `V_T` en V.
 ### Ejercicio 3 · Del voltaje a la cuenta (2 pts)
 **Para qué sirve:** lo que se guarda no es un voltaje sino un número entero: la cuenta del convertidor.
 
-El convertidor reparte de 0 a `VCC` en cuentas de 0 a `N_MAX`. La cuenta es la fracción de `VCC` que representa tu
-voltaje, multiplicada por `N_MAX` y **redondeada** a entero (sin decimales).
+El convertidor divide el rango de 0 a `VCC` en 2¹⁰ = 1024 escalones de `Q_V` = `VCC` / 1024. La cuenta es tu
+voltaje dividido entre el escalón, **redondeada** a entero (sin decimales); la más grande posible es `N_MAX` = 1023.
 """),
           cu.ejercicio(h, 3, "N_T", [("tu V_T", "V_T")], ["cuenta"]),
           cu.md("""
@@ -219,7 +223,7 @@ print(f"B1 · Semana del {lunes} al {domingo} · {len(T_real)} lecturas · fuent
 """),
           cu.code("""
 # B2 · Por tu cadena: temperatura → resistencia → voltaje → cuenta entera
-cuentas = np.round(v_div(T_real, RF) / VCC * N_MAX).astype(int)
+cuentas = np.minimum(np.round(v_div(T_real, RF) / Q_V), N_MAX).astype(int)
 fig, (a1, a2) = plt.subplots(2, 1, figsize=(10, 5.5), sharex=True)
 a1.plot(T_real); a1.set_ylabel("T real (°C)"); titulo(a1, "Lo que pasó", alumno)
 a2.step(range(len(cuentas)), cuentas, where="mid", color="#D9822B"); a2.set_ylabel("cuenta del ADC")
@@ -229,7 +233,7 @@ print(f"Cuentas de {cuentas.min()} a {cuentas.max()}: la semana usó {cuentas.ma
 """),
           cu.md("""
 ### B3 · De regreso: de la cuenta a la temperatura
-1. `PASO_V`: cuántos volts vale **una** cuenta (el rango de 0 a `VCC` repartido en `N_MAX` cuentas). El cuaderno
+1. `PASO_V`: cuántos volts vale **una** cuenta: el escalón, el rango de 0 a `VCC` repartido en 2¹⁰ = 1024. El cuaderno
    multiplica cada cuenta por tu `PASO_V`, y con eso calcula la resistencia y la temperatura reconstruida.
 2. `resol_pred_C`: el **error máximo predicho**: medio escalón expresado en °C. Divide tu `PASO_V` entre la
    sensibilidad `S_V_C` (impresa arriba, en V/°C) y toma la mitad.
