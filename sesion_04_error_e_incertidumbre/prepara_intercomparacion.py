@@ -4,7 +4,7 @@ Uso (en Colab o en la computadora, con los archivos exportados de ElitechLog en 
     python prepara_intercomparacion.py RC5_1.xlsx RC5_2.xlsx RC5_3.xlsx
 -> datos/intercomparacion_RC5.csv con columnas  minuto, RC5_1, RC5_2, RC5_3  (ventana común, intervalo común)
 
-El lector busca en cada archivo la primera columna que se puede leer como fecha y hora y la primera columna numérica
+Probado con el formato real de ElitechLog (RC-5, firmware V2.1, 31 oct 2026). El lector busca en cada archivo la primera columna que se puede leer como fecha y hora y la primera columna numérica
 con temperaturas plausibles (de −40 a 90 °C); así tolera los encabezados y renglones de informe que agrega ElitechLog.
 Si al probarlo con un archivo real no encuentra las columnas, hay que ajustar `leer_registro` a ese formato.
 """
@@ -16,14 +16,28 @@ import pandas as pd
 
 
 def leer_registro(ruta):
+    """Serie de temperatura de un archivo. En un Excel con varias hojas (ElitechLog exporta «Resumen», «Lista» y
+    «Grafico») se queda con la hoja que da más lecturas."""
     if ruta.lower().endswith((".xls", ".xlsx")):
-        crudo = pd.read_excel(ruta, header=None)
+        series = []
+        for nombre, hoja in pd.read_excel(ruta, header=None, sheet_name=None).items():
+            try:
+                series.append(_serie(hoja, ruta))
+            except ValueError:
+                pass
+        if not series:
+            raise ValueError(f"{ruta}: ninguna hoja tiene una columna de fecha y hora y otra de temperatura.")
+        return max(series, key=len)
     else:   # CSV o texto con renglones de informe antes de la tabla: se detecta el separador en las últimas líneas
         texto = open(ruta, encoding="utf-8", errors="replace").read()
         lineas = [l for l in texto.splitlines() if l.strip()]
         sep = max([",", ";", "\t"], key=lambda c: sum(l.count(c) for l in lineas[-50:]))
         ancho = max(l.count(sep) for l in lineas) + 1
         crudo = pd.read_csv(io.StringIO(texto), sep=sep, header=None, names=range(ancho), engine="python")
+        return _serie(crudo, ruta)
+
+
+def _serie(crudo, ruta):
     col_t = col_v = None
     for c in crudo.columns:
         texto = crudo[c].astype(str)
